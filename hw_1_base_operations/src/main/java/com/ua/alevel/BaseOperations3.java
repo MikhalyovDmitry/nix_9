@@ -1,4 +1,4 @@
-package main.java.ua.com.alevel;
+package ua.com.alevel;
 
 import java.util.Scanner;
 
