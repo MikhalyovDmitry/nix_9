@@ -11,7 +11,7 @@ public class StringsMain {
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String line = "";
-        System.out.print("Введите аргументы для метода reverse в формате: \n" +
+        System.out.print("Введите аргументы для метода reverse через запятую в формате: \n" +
                 "reverse(String src)  - обычный реверс строки. \n" +
                 "reverse(String src, String dest)  - реверс по указанной подстроке в строке. \n" +
                 "reverse(String src, int firstIndex, int lastIndex) - Вы можете указать\n " +
