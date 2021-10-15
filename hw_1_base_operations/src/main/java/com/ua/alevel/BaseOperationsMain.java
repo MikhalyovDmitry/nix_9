@@ -6,9 +6,9 @@ import java.util.Scanner;
 public class BaseOperationsMain {
 
     public static void main(String[] args) {
-        int taskChoise;
+        int taskChoice;
         do {
-            taskChoise = 4;
+            taskChoice = 4;
             System.out.println("Выберите, что будем делать:");
             System.out.println("1. Суммирование цифр в строке");
             System.out.println("2. Подсчет букв в строке");
@@ -16,12 +16,12 @@ public class BaseOperationsMain {
             System.out.println("0. Выход");
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                taskChoise = Integer.parseInt(reader.readLine());
+                taskChoice = Integer.parseInt(reader.readLine());
             } catch (Exception e) {
                 e.getStackTrace();
             }
 
-            switch (taskChoise) {
+            switch (taskChoice) {
                 case 1: {
                     System.out.println("Эта программа подсчитает сумму всех цифр в строке, которую Вы введете.");
                     Scanner in = new Scanner(System.in);
@@ -54,10 +54,10 @@ public class BaseOperationsMain {
                     break;
                 }
                 default : {
-                    System.out.print("Некорректно, попробуйте еще раз! ");
+                    System.out.println("Некорректно, попробуйте еще раз! ");
                 }
             }
-        } while (taskChoise > 0);
+        } while (taskChoice > 0);
     }
 
 
