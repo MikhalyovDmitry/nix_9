@@ -6,12 +6,14 @@ import java.util.Scanner;
 public class BaseOperationsMain {
 
     public static void main(String[] args) {
-        int taskChoise = 0;
+        int taskChoise;
         do {
+            taskChoise = 4;
+            System.out.println("Выберите, что будем делать:");
             System.out.println("1. Суммирование цифр в строке");
             System.out.println("2. Подсчет букв в строке");
             System.out.println("3. Вычисление времени конца урока");
-            System.out.println("4. Выход");
+            System.out.println("0. Выход");
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 taskChoise = Integer.parseInt(reader.readLine());
@@ -21,28 +23,41 @@ public class BaseOperationsMain {
 
             switch (taskChoise) {
                 case 1: {
+                    System.out.println("Эта программа подсчитает сумму всех цифр в строке, которую Вы введете.");
                     Scanner in = new Scanner(System.in);
-                    System.out.print("Введите строку: ");
+                    System.out.println("Введите строку: ");
                     String str = in.nextLine();
                     System.out.println(sumOfInts(str));
                     break;
                 }
                 case 2: {
+                    System.out.println("Эта программа подсчитает количество всех букв в строке, которую Вы введете.");
                     Scanner in = new Scanner(System.in);
-                    System.out.print("Ведите строку: ");
+                    System.out.println("Введите строку: ");
                     String str = in.nextLine();
                     sortLetters(str);
                     break;
                 }
                 case 3: {
                     Scanner in = new Scanner(System.in);
-                    System.out.print("Введите номер урока от 1 до 10: ");
+                    System.out.println("Введите номер урока от 1 до 10, и программа подсчитает время конца урока. ");
                     int num = in.nextInt();
+                    if (num < 1 || num > 10) {
+                        System.out.println("Номер урока введен некорректно! ");
+                        break;
+                    }
                     lessonEnds(num);
                     break;
                 }
+                case 0: {
+                    System.out.println("Выход из программы... ");
+                    break;
+                }
+                default : {
+                    System.out.print("Некорректно, попробуйте еще раз! ");
+                }
             }
-        } while (taskChoise < 4);
+        } while (taskChoise > 0);
     }
 
 
