@@ -1,11 +1,13 @@
 package ua.com.alevel;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class BaseOperationsMain {
 
     public static void main(String[] args) {
+        String str = "";
+        int num = 0;
         int taskChoice;
         do {
             taskChoice = 4;
@@ -14,9 +16,9 @@ public class BaseOperationsMain {
             System.out.println("2. Подсчет букв в строке");
             System.out.println("3. Вычисление времени конца урока");
             System.out.println("0. Выход");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                taskChoice = Integer.parseInt(reader.readLine());
+                taskChoice = parseIntWithoutExceptions(reader.readLine());
             } catch (Exception e) {
                 e.getStackTrace();
             }
@@ -24,24 +26,33 @@ public class BaseOperationsMain {
             switch (taskChoice) {
                 case 1: {
                     System.out.println("Эта программа подсчитает сумму всех цифр в строке, которую Вы введете.");
-                    Scanner in = new Scanner(System.in);
                     System.out.println("Введите строку: ");
-                    String str = in.nextLine();
+                    try {
+                        str = reader.readLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.out.println(sumOfInts(str));
                     break;
                 }
                 case 2: {
                     System.out.println("Эта программа подсчитает количество всех букв в строке, которую Вы введете.");
-                    Scanner in = new Scanner(System.in);
                     System.out.println("Введите строку: ");
-                    String str = in.nextLine();
+                    try {
+                        str = reader.readLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     sortLetters(str);
                     break;
                 }
                 case 3: {
-                    Scanner in = new Scanner(System.in);
                     System.out.println("Введите номер урока от 1 до 10, и программа подсчитает время конца урока. ");
-                    int num = in.nextInt();
+                    try {
+                        num = parseIntWithoutExceptions(reader.readLine());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if (num < 1 || num > 10) {
                         System.out.println("Номер урока введен некорректно! ");
                         break;
@@ -54,13 +65,20 @@ public class BaseOperationsMain {
                     break;
                 }
                 default : {
-                    System.out.println("Некорректно, попробуйте еще раз! ");
+                    System.out.println("Некорректно! Попробуйте, пожалуйста, выбрать вариант из списка выше.");
                 }
             }
         } while (taskChoice > 0);
     }
 
-
+    public static int parseIntWithoutExceptions(String number) {
+        int defaultValue = 99999;
+        try {
+            return Integer.parseInt(number);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 
     public static int sumOfInts(String instr) {
         int result = 0;
