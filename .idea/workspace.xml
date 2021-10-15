@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8ffeb56-2efc-451b-ab71-7f7dadc25098" name="Changes" comment="git ignores .gitignore and pushing all that garbage....&#10;WHY???">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/src/main/java/com/ua/alevel/BaseOperationsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/src/main/java/com/ua/alevel/BaseOperationsMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/target/classes/ua/com/alevel/BaseOperationsMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/target/classes/ua/com/alevel/BaseOperationsMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/target/hw_1_base_operations.jar" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/target/hw_1_base_operations.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/target/original-hw_1_base_operations.jar" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/target/original-hw_1_base_operations.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/run.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/src/main/java/com/ua/alevel/StringsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/src/main/java/com/ua/alevel/StringsMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/target/classes/ua/com/alevel/StringsMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/target/classes/ua/com/alevel/StringsMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/target/hw_2_strings.jar" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/target/hw_2_strings.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/target/original-hw_2_strings.jar" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/target/original-hw_2_strings.jar" afterDir="false" />
-    </list>
+    <list default="true" id="e8ffeb56-2efc-451b-ab71-7f7dadc25098" name="Changes" comment="git ignores .gitignore and pushing all that garbage....&#10;WHY???" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -259,7 +246,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634325123360</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="git ignores .gitignore and pushing all that garbage....&#10;WHY???">
+      <created>1634338888678</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1634338888678</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
