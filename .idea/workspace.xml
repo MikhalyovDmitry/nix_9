@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8ffeb56-2efc-451b-ab71-7f7dadc25098" name="Changes" comment="git ignores .gitignore and pushing all that garbage....&#10;WHY???" />
+    <list default="true" id="e8ffeb56-2efc-451b-ab71-7f7dadc25098" name="Changes" comment="git ignores .gitignore and pushing all that garbage....&#10;WHY???">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -253,7 +255,21 @@
       <option name="project" value="LOCAL" />
       <updated>1634338888678</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="git ignores .gitignore and pushing all that garbage....&#10;WHY???">
+      <created>1634338961040</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1634338961040</updated>
+    </task>
+    <task id="LOCAL-00025" summary="git ignores .gitignore and pushing all that garbage....&#10;WHY???">
+      <created>1634339119846</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1634339119846</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
