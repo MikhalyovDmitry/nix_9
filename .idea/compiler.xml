@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="hw_1_base_operations" />
+        <module name="hw_2_strings" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="hw_1" target="1.5" />
+      <module name="hw_1_base_operations" target="16" />
+      <module name="hw_2_strings" target="16" />
+      <module name="nix_9" target="16" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
