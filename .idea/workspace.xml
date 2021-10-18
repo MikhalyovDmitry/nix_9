@@ -4,14 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8ffeb56-2efc-451b-ab71-7f7dadc25098" name="Changes" comment="git ignores .gitignore and pushing all that garbage....&#10;WHY???">
+    <list default="true" id="e8ffeb56-2efc-451b-ab71-7f7dadc25098" name="Changes" comment="final">
+      <change afterPath="$PROJECT_DIR$/hw_2_strings/src/main/java/ua/com/alevel/StringReverse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/clean_install.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/deploy.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/hw_1_base_operations/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hw_1_base_operations/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/run.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/src/main/java/com/ua/alevel/BaseOperationsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/src/main/java/com/ua/alevel/BaseOperationsMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/src/main/java/com/ua/alevel/BaseOperationsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/src/main/java/ua/com/alevel/BaseOperationsMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw_2_strings/clean_install.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw_2_strings/deploy.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/hw_2_strings/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hw_2_strings/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/run.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/src/main/java/com/ua/alevel/StringsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/src/main/java/com/ua/alevel/StringsMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw_2_strings/src/main/java/com/ua/alevel/StringsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/src/main/java/ua/com/alevel/StringsMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -290,7 +295,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634340752867</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="final">
+      <created>1634341471704</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1634341471704</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -321,7 +333,8 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;.idea/.gitignore" />
     <MESSAGE value="commit" />
     <MESSAGE value="git ignores .gitignore and pushing all that garbage....&#10;WHY???" />
-    <option name="LAST_COMMIT_MESSAGE" value="git ignores .gitignore and pushing all that garbage....&#10;WHY???" />
+    <MESSAGE value="final" />
+    <option name="LAST_COMMIT_MESSAGE" value="final" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
