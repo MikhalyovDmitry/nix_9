@@ -1,11 +1,12 @@
-package com.ua.alevel;
+package ua.com.alevel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 public class BaseOperationsMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         String str = "";
         int num = 0;
         int taskChoice;
@@ -92,6 +93,7 @@ public class BaseOperationsMain {
     }
     public static void sortLetters(String instr) {
         StringBuilder sb = new StringBuilder(instr);
+        System.out.print(instr);
         int i;
         int count;
         while (sb.length() > 0) {
