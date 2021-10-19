@@ -5,18 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8ffeb56-2efc-451b-ab71-7f7dadc25098" name="Changes" comment="final">
-      <change afterPath="$PROJECT_DIR$/hw_2_strings/src/main/java/ua/com/alevel/StringReverse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/String_helper/cleaninstall.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/String_helper/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/clean_install.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/deploy.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/run.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_1_base_operations/src/main/java/com/ua/alevel/BaseOperationsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/hw_1_base_operations/src/main/java/ua/com/alevel/BaseOperationsMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/clean_install.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/deploy.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/hw_2_strings/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hw_2_strings/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/run.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hw_2_strings/src/main/java/com/ua/alevel/StringsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/hw_2_strings/src/main/java/ua/com/alevel/StringsMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hw_2_strings/src/main/java/ua/com/alevel/StringReverse.java" beforeDir="false" afterPath="$PROJECT_DIR$/String_helper/src/main/java/ua/com/alevel/StringReverse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +38,9 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
   <component name="ProjectId" id="1zC3CI6qLwGC5FIgVQFjv7vtsuH" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -55,7 +52,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/hw_2_strings/src/main/java" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/hw_2_strings" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/String_helper" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -68,11 +65,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\User\IdeaProjects\nix_9\String_helper" />
+      <recent name="C:\Users\User\IdeaProjects\nix_9\String_helper\src\main\java" />
+      <recent name="C:\Users\User\IdeaProjects\nix_9\unit_4_start_oop\src\main\java" />
       <recent name="C:\Users\User\IdeaProjects\nix_9\hw_2_strings" />
       <recent name="C:\Users\User\IdeaProjects\nix_9\hw_2_strings\src" />
-      <recent name="C:\Users\User\IdeaProjects\nix_9\hw_1_base_operations\src" />
-      <recent name="C:\Users\User\IdeaProjects\nix_9\unit_1_compile\src" />
-      <recent name="C:\Users\User\IdeaProjects\nix_9\unit_1_compile\src\main\java\com\app" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\User\IdeaProjects\nix_9\hw_1_base_operations\src\main\java\com\ua\alevel" />
@@ -80,6 +77,10 @@
       <recent name="C:\Users\User\IdeaProjects\nix_9\hw_1_base_operations" />
       <recent name="C:\Users\User\IdeaProjects\nix_9" />
       <recent name="C:\Users\User\IdeaProjects\nix_9\unit_1_compile" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ua.com.alevel.dao" />
+      <recent name="ua.com.alevel.entity" />
     </key>
   </component>
   <component name="RunManager">
