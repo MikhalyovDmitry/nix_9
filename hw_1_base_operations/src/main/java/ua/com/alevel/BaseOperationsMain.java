@@ -1,4 +1,5 @@
 package ua.com.alevel;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -91,6 +92,7 @@ public class BaseOperationsMain {
         }
         return result;
     }
+
     public static void sortLetters(String instr) {
         StringBuilder sb = new StringBuilder(instr);
         System.out.print(instr);
@@ -114,6 +116,7 @@ public class BaseOperationsMain {
             sb.delete(i, i + 1);
         }
     }
+
     public static void lessonEnds(int l) {
         int hours;
         int minutes;
@@ -123,5 +126,4 @@ public class BaseOperationsMain {
         minutes = time % 60;
         System.out.println(hours + " " + minutes);
     }
-
 }
