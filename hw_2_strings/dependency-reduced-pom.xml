@@ -32,7 +32,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>ua.com.alevel.StringsMain</mainClass>
+                  <mainClass>ua.com.alevel.LevelOneTaskOne</mainClass>
                 </transformer>
               </transformers>
             </configuration>

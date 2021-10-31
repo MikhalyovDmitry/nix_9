@@ -66,7 +66,7 @@ public class BaseOperationsMain {
                     System.out.println("Выход из программы... ");
                     break;
                 }
-                default : {
+                default: {
                     System.out.println("Некорректно! Попробуйте, пожалуйста, выбрать вариант из списка выше.");
                 }
             }
