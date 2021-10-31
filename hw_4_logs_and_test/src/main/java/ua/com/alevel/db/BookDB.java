@@ -2,17 +2,15 @@ package ua.com.alevel.db;
 
 import ua.com.alevel.entity.Author;
 import ua.com.alevel.entity.Book;
-import ua.com.alevel.db.AuthorDB;
 
 import java.util.Arrays;
 import java.util.UUID;
 
 public class BookDB {
 
-    private Book[] books;
     private static BookDB instance;
-
     int size = 0;
+    private Book[] books;
 
     private BookDB() {
         books = new Book[size];
@@ -78,16 +76,14 @@ public class BookDB {
     public Book[] findAllAuthorBooks(Author author) {
         Book[] tempResult = new Book[books.length];
         int i = 0;
-        for (Book book: books) {
+        for (Book book : books) {
             if (book.getAuthor().equals(author)) {
                 tempResult[i] = book;
                 i++;
             }
         }
         Book[] result = new Book[i];
-        for (int j = 0; j < result.length; j++) {
-            result[j] = tempResult[j];
-        }
+        System.arraycopy(tempResult, 0, result, 0, result.length);
         return result;
     }
 

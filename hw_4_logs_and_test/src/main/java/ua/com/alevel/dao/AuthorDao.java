@@ -13,8 +13,8 @@ public class AuthorDao {
         AuthorDB.getInstance().update(author);
     }
 
-    public boolean delete(String id) {
-        return AuthorDB.getInstance().delete(id);
+    public void delete(String id) {
+        AuthorDB.getInstance().delete(id);
     }
 
     public Author findById(String id) {

@@ -17,6 +17,39 @@ public class AuthorController {
     private final AuthorService authorService = new AuthorService();
     private final BookService bookService = new BookService();
 
+    public static String notNullInput(BufferedReader reader) {
+        String result = null;
+        try {
+            do {
+                result = reader.readLine();
+                if (result.isEmpty())
+                    System.out.println("Ошибка! Название должно содержать хотя бы один символ!");
+            }
+            while (result.isEmpty());
+        } catch (IOException e) {
+            System.out.println("Error: = " + e.getMessage());
+        }
+        return result;
+    }
+
+    public static Author notNullAuthorById(BufferedReader reader) {
+        AuthorService authorService = new AuthorService();
+        Author result = null;
+        String id;
+        try {
+            do {
+                id = reader.readLine();
+                result = authorService.findById(id);
+                if (result == null && !id.equals("0"))
+                    System.out.println("Ошибка! Введите правильный Id  или 0 для выхода:");
+            }
+            while (result == null && !id.equals("0"));
+        } catch (IOException e) {
+            System.out.println("Error: = " + e.getMessage());
+        }
+        return result;
+    }
+
     public void run() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Выберите, что будете делать:");
@@ -92,9 +125,10 @@ public class AuthorController {
             return;
         }
         Book[] books = authorService.findAllAuthorBooks(author);
-        for (Book book: books) {
+        for (Book book : books) {
             bookService.delete(book.getId());
         }
+        authorService.delete(author.getId());
     }
 
     private void findById(BufferedReader reader) {
@@ -129,38 +163,5 @@ public class AuthorController {
 
     private void separatingLine() {
         System.out.println("──────────────────────────────────────────────");
-    }
-
-    public static String notNullInput(BufferedReader reader) {
-        String result = null;
-        try {
-            do {
-                result = reader.readLine();
-                if (result.isEmpty())
-                    System.out.println("Ошибка! Название должно содержать хотя бы один символ!");
-            }
-            while (result.isEmpty());
-        } catch (IOException e) {
-            System.out.println("Error: = " + e.getMessage());
-        }
-        return result;
-    }
-
-    public static Author notNullAuthorById(BufferedReader reader) {
-        AuthorService authorService = new AuthorService();
-        Author result = null;
-        String id;
-        try {
-            do {
-                id = reader.readLine();
-                result = authorService.findById(id);
-                if (result == null && !id.equals("0"))
-                    System.out.println("Ошибка! Введите правильный Id  или 0 для выхода:");
-            }
-            while (result == null && !id.equals("0"));
-        } catch (IOException e) {
-            System.out.println("Error: = " + e.getMessage());
-        }
-        return result;
     }
 }

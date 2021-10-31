@@ -5,15 +5,6 @@ public class Author {
     private String name;
     private String genre;
     private String id;
-    private Book[] books;
-
-    public Book[] getBooks() {
-        return books;
-    }
-
-    public void setBook(Book book) {
-        this.books = new Book[0];
-    }
 
     public String getName() {
         return name;

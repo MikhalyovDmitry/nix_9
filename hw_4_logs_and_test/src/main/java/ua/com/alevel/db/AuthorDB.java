@@ -1,15 +1,15 @@
 package ua.com.alevel.db;
 
 import ua.com.alevel.entity.Author;
+
 import java.util.Arrays;
 import java.util.UUID;
 
 public class AuthorDB {
 
-    private Author[] authors;
     private static AuthorDB instance;
-
     int size = 0;
+    private Author[] authors;
 
     private AuthorDB() {
         authors = new Author[size];
@@ -38,14 +38,13 @@ public class AuthorDB {
         current.setGenre(author.getGenre());
     }
 
-    public boolean delete(String id) {
+    public void delete(String id) {
         for (int i = 0; i < size; i++) {
             if (authors[i].getId().equals(id)) {
                 deleteAt(i);
-                return true;
+                return;
             }
         }
-        return false;
     }
 
     private void deleteAt(int index) {

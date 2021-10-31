@@ -4,6 +4,7 @@ import ua.com.alevel.entity.Author;
 import ua.com.alevel.entity.Book;
 import ua.com.alevel.service.AuthorService;
 import ua.com.alevel.service.BookService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +17,39 @@ public class BookController {
     public final BookService bookService = new BookService();
     private final AuthorService authorService = new AuthorService();
     private final AuthorController authorController = new AuthorController();
+
+    public static String notNullInput(BufferedReader reader) {
+        String result = null;
+        try {
+            do {
+                result = reader.readLine();
+                if (result.isEmpty())
+                    System.out.println("Ошибка! Название должно содержать хотя бы один символ!");
+            }
+            while (result.isEmpty());
+        } catch (IOException e) {
+            System.out.println("Error: = " + e.getMessage());
+        }
+        return result;
+    }
+
+    public static Book notNullBookById(BufferedReader reader) {
+        BookService bookService = new BookService();
+        Book result = null;
+        String id;
+        try {
+            do {
+                id = reader.readLine();
+                result = bookService.findById(id);
+                if (result == null && !id.equals("0"))
+                    System.out.println("Ошибка! Введите правильный Id  или 0 для выхода:");
+            }
+            while (result == null && !id.equals("0"));
+        } catch (IOException e) {
+            System.out.println("Error: = " + e.getMessage());
+        }
+        return result;
+    }
 
     public void run() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -93,7 +127,6 @@ public class BookController {
     private void delete(BufferedReader reader) {
         System.out.println("Введите Id книги, которую хотите удалить:");
         Book book;
-        String id;
         book = notNullBookById(reader);
         if (book == null) {
             System.out.println("Id не был введен корректно");
@@ -111,7 +144,6 @@ public class BookController {
         book = notNullBookById(reader);
         if (book == null) {
             System.out.println("Id не был введен корректно");
-            return;
         } else {
             bookOutput(book);
             separatingLine();
@@ -145,7 +177,7 @@ public class BookController {
             Book[] books = authorService.findAllAuthorBooks(author);
             System.out.println("Книги, найденные по указанному автору:");
             if (books != null && books.length != 0) {
-                for (Book book: books) {
+                for (Book book : books) {
                     bookOutput(book);
                 }
                 separatingLine();
@@ -169,7 +201,7 @@ public class BookController {
 
                 choice = reader.readLine();
                 switch (choice) {
-                    case "1": {
+                    case "1" -> {
                         System.out.println("Введите Id автора:");
                         do {
                             id = reader.readLine();
@@ -178,15 +210,9 @@ public class BookController {
                                 System.out.println("Ошибка! Введите правильный Id, или 0 для выхода:");
                         }
                         while (author == null && !id.equals("0"));
-                        break;
                     }
-                    case "2": {
-                        author = authorController.create(reader);
-                        break;
-                    }
-                    default: {
-                        System.out.println("Ошибка! Введите 1 или 2!");
-                    }
+                    case "2" -> author = authorController.create(reader);
+                    default -> System.out.println("Ошибка! Введите 1 или 2!");
                 }
             }
             while (!choice.equals("1") && !choice.equals("2"));
@@ -208,38 +234,5 @@ public class BookController {
 
     private void separatingLine() {
         System.out.println("──────────────────────────────────────────────");
-    }
-
-    public static String notNullInput(BufferedReader reader) {
-        String result = null;
-        try {
-            do {
-                result = reader.readLine();
-                if (result.isEmpty())
-                    System.out.println("Ошибка! Название должно содержать хотя бы один символ!");
-            }
-            while (result.isEmpty());
-        } catch (IOException e) {
-            System.out.println("Error: = " + e.getMessage());
-        }
-        return result;
-    }
-
-    public static Book notNullBookById(BufferedReader reader) {
-        BookService bookService = new BookService();
-        Book result = null;
-        String id;
-        try {
-            do {
-                id = reader.readLine();
-                result = bookService.findById(id);
-                if (result == null && !id.equals("0"))
-                    System.out.println("Ошибка! Введите правильный Id  или 0 для выхода:");
-            }
-            while (result == null && !id.equals("0"));
-        } catch (IOException e) {
-            System.out.println("Error: = " + e.getMessage());
-        }
-        return result;
     }
 }
