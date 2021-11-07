@@ -13,3 +13,14 @@ module_1 = 8
 
 ЧТО ЭТО ЗА ИМЕНА КЛАССОВ???
 юзер френдли оч хромает
+
+hw_4 = 7
+
+ua/com/alevel/db/BookDB.java:16
+ua/com/alevel/db/AuthorDB.java:15
+
+на данном этапе инитить массивы 0 - это расстрельная статья
+
+ua/com/alevel/entity/Book.java:6
+
+а у книги может быть только один автор ???
