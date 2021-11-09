@@ -24,9 +24,11 @@
         <module>hw_1_base_operations</module>
         <module>hw_2_strings</module>
         <module>hw_3_start_oop</module>
-        <module>String_helper</module>
-        <module>Module_1</module>
+        <module>string_helper</module>
+        <module>module_1</module>
         <module>hw_4_logs_and_test</module>
+        <module>hw_5_collections</module>
+        <module>hw_5_collection</module>
     </modules>
 
     <packaging>pom</packaging>
