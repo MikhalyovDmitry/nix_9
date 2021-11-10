@@ -4,13 +4,15 @@ public class MathSet {
     private static final int DEFAULT_LENGTH = 0;
     private String name;
     private Number[] array;
+    private int capacity = Integer.MAX_VALUE;
 
     public MathSet() {
         this.array = new Number[DEFAULT_LENGTH];
     }
 
     public MathSet(int capacity) {
-        this.array = new Number[capacity];
+        this.array = new Number[DEFAULT_LENGTH];
+        this.capacity = capacity;
     }
 
     public MathSet(Number[] numbers) {
@@ -45,6 +47,14 @@ public class MathSet {
         this.array = mathSet.getArray();
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     public int compare(Number number1, Number number2) {
         if (((Object) number2).getClass().equals(((Object) number1).getClass())) {
             if (number1 instanceof Comparable) {
@@ -70,6 +80,15 @@ public class MathSet {
         this.name = name;
     }
 
+    public Number[] capacityCheck(Number[] input) {
+        if (input.length > capacity) {
+            System.out.println("Операция отменена! Превышена capacity = " + capacity);
+        } else {
+            return input;
+        }
+        return this.array;
+    }
+
     void add(Number n) {
         MathSet mathSet = new MathSet(this.array);
         if (!mathSet.contains(n)) {
@@ -77,8 +96,7 @@ public class MathSet {
             Number[] result = new Number[resultLength];
             System.arraycopy(this.array, 0, result, 0, resultLength - 1);
             result[resultLength - 1] = n;
-            this.array = result;
-            //arrayToArrayCapacityCheck(result);
+            this.array = capacityCheck(result);
         }
     }
 
@@ -87,13 +105,13 @@ public class MathSet {
         for (Number i : numbers) {
             result.add(i);
         }
-        this.array = result.getArray();
+        this.array = capacityCheck(result.getArray());
     }
 
     void join(MathSet set) {
         MathSet mathSet = new MathSet(this.array);
         mathSet.add(set.getArray());
-        this.array = mathSet.getArray();
+        this.array = capacityCheck(mathSet.getArray());
     }
 
     void join(MathSet[] sets) {
@@ -101,7 +119,7 @@ public class MathSet {
         for (MathSet set : sets) {
             mathSet.join(set);
         }
-        this.array = mathSet.getArray();
+        this.array = capacityCheck(mathSet.getArray());
     }
 
     void intersection(MathSet set) {
@@ -342,7 +360,10 @@ public class MathSet {
                 toString.append(i).append(" ");
             }
         }
-        toString.append(">");
+        toString.append("> ");
+        if (capacity != Integer.MAX_VALUE) {
+            toString.append("capacity = ").append(this.capacity);
+        }
         return toString.toString();
     }
 }

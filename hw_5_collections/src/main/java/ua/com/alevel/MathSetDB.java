@@ -1,41 +1,49 @@
 package ua.com.alevel;
 
-import java.util.Arrays;
-
 public class MathSetDB {
-
     public Numbers[] numbers;
     public MathSet[] mathSets;
-    int numbersSize = 0;
-    int mathSetsSize = 0;
+    int numbersSize = 10;
+    int mathSetsSize = 10;
+    int numbersIndex = 0;
+    int mathSetsIndex = 0;
 
     public void createNumbers(String name, Number[] numbers) {
-        Numbers[] buffer = new Numbers[numbersSize + 1];
-        buffer[numbersSize] = new Numbers();
-        buffer[numbersSize].setName(name);
-        buffer[numbersSize].setNumbers(numbers);
-        if (numbersSize > 0)
-            System.arraycopy(this.numbers, 0, buffer, 0, numbersSize);
-        numbersSize++;
+        if (numbersIndex >= numbersSize)
+            numbersSize = numbersSize * 2;
+        Numbers[] buffer = new Numbers[numbersSize];
+        buffer[numbersIndex] = new Numbers();
+        buffer[numbersIndex].setName(name);
+        buffer[numbersIndex].setNumbers(numbers);
+        if (this.numbers != null)
+            System.arraycopy(this.numbers, 0, buffer, 0, numbersIndex);
+        numbersIndex++;
         this.numbers = buffer;
     }
 
     public Numbers get(String name) {
-        return Arrays.stream(numbers).filter(number -> number.getName().equals(name)).findFirst().orElse(null);
+        for (Numbers number : numbers)
+            if (number != null && number.getName().equals(name))
+                return number;
+        return null;
     }
 
     public void createMathSet(String name) {
-        MathSet[] buffer = new MathSet[mathSetsSize + 1];
-        buffer[mathSetsSize] = new MathSet();
-        buffer[mathSetsSize].setName(name);
-        if (mathSetsSize > 0)
-            System.arraycopy(this.mathSets, 0, buffer, 0, mathSetsSize);
-        mathSetsSize++;
+        if (mathSetsIndex >= mathSetsSize)
+            mathSetsSize = mathSetsSize * 2;
+        MathSet[] buffer = new MathSet[mathSetsSize];
+        buffer[mathSetsIndex] = new MathSet();
+        buffer[mathSetsIndex].setName(name);
+        if (this.mathSets != null)
+            System.arraycopy(this.mathSets, 0, buffer, 0, mathSetsIndex);
+        mathSetsIndex++;
         this.mathSets = buffer;
     }
 
     public MathSet getSet(String name) {
-        return Arrays.stream(mathSets).filter(set -> set.getName().equals(name)).findFirst().orElse(null);
+        for (MathSet mathSet : mathSets)
+            if (mathSet != null && mathSet.getName().equals(name))
+                return mathSet;
+        return null;
     }
-
 }

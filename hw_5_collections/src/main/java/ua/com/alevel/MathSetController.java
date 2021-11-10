@@ -106,6 +106,7 @@ public class MathSetController {
             if (result != null) {
                 db.createMathSet(name);
                 db.getSet(name).setArray(result.getArray());
+                db.getSet(name).setCapacity(result.getCapacity());
                 System.out.println("Created MathSet: \nname = " + name + "\n" + result);
                 return;
             } else {
@@ -116,7 +117,6 @@ public class MathSetController {
     }
 
     public static void updateMenu() {
-        String choice;
         String name = chooseMathSetNameFromList();
         do {
             line();
@@ -130,17 +130,12 @@ public class MathSetController {
             System.out.println("6 Clear");
             System.out.println("0 Назад");
             line();
-            choice = readLineWithoutExceptions();
-            switch (choice) {
+            switch (readLineWithoutExceptions()) {
                 case "1" -> addMenu(name);
                 case "2" -> joinMenu(name);
                 case "3" -> intersectionMenu(name);
                 case "4" -> sortMenu(name);
-                case "5" -> {
-                    int[] index = inputFirstAndLastIndex(name);
-                    db.getSet(name).cut(index[0], index[1]);
-                    System.out.println("Updated MathSet: \nname = " + name + "\n" + db.getSet(name));
-                }
+                case "5" -> cutMenu(name);
                 case "6" -> clearMenu(name);
                 case "0" -> {
                     return;
@@ -208,18 +203,19 @@ public class MathSetController {
     }
 
     public static String numbersInput() {
-        String name;
         System.out.println("Введите имя массива Number[]");
-        name = readLineWithoutExceptions();
-        String numberString;
+        String name = readLineWithoutExceptions();
+        if (!isNumbersNull(name)) {
+            System.out.println("Невозможно создать, Number[] с таким именем уже существует!");
+            return null;
+        }
         boolean numberOk;
         Number[] numbers;
         do {
             System.out.println("Введите массив Number[] через пробел: ");
-            numberString = readLineWithoutExceptions();
             numberOk = true;
             int i = 0;
-            String[] strArr = numberString.split(" ");
+            String[] strArr = readLineWithoutExceptions().split(" ");
             numbers = new Number[strArr.length];
             for (String str : strArr) {
                 if (isNotNumber(str)) {
@@ -258,7 +254,9 @@ public class MathSetController {
     public static MathSet varargsNumbersConstructor() {
         if (db.numbers != null) {
             for (Numbers i : db.numbers) {
-                System.out.println("name = " + i.getName() + " " + i);
+                if (i != null) {
+                    System.out.println("name = " + i.getName() + " " + i);
+                }
             }
         } else {
             System.out.println("Number[] не найдены!");
@@ -276,14 +274,7 @@ public class MathSetController {
     }
 
     public static MathSet varargsMathSetConstructor() {
-        if (db.mathSets != null) {
-            for (MathSet i : db.mathSets) {
-                System.out.println(i.getName() + " " + i);
-            }
-        } else {
-            System.out.println("MathSet не найдены!");
-            return null;
-        }
+        outMathSetList();
         MathSet[] sets = stringToMathSetArray();
         return new MathSet(sets);
     }
@@ -441,6 +432,12 @@ public class MathSetController {
         while (true);
     }
 
+    public static void cutMenu(String name) {
+        int[] index = inputFirstAndLastIndex(name);
+        db.getSet(name).cut(index[0], index[1]);
+        System.out.println("Updated MathSet: \nname = " + name + "\n" + db.getSet(name));
+    }
+
     public static void clearMenu(String name) {
         String numbersName;
         do {
@@ -502,7 +499,9 @@ public class MathSetController {
     public static String chooseNumbersNameFromList() {
         if (db.numbers != null) {
             for (Numbers i : db.numbers) {
-                System.out.println("name = " + i.getName() + " " + i);
+                if (i != null) {
+                    System.out.println("name = " + i.getName() + " " + i);
+                }
             }
         } else {
             System.out.println("Number[] не найдены!");
@@ -512,15 +511,7 @@ public class MathSetController {
     }
 
     public static String chooseMathSetNameFromList() {
-        if (db.mathSets != null) {
-            for (MathSet i : db.mathSets) {
-                System.out.println(i.getName() + " " + i);
-            }
-        } else {
-            System.out.println("MathSet не найдены!");
-            System.out.println("Создайте хотя бы один MathSet");
-            mathSetInput();
-        }
+        outMathSetList();
         System.out.println("Выберите имя MathSet из указанных выше");
         return inputMathSetName();
     }
@@ -528,10 +519,14 @@ public class MathSetController {
     public static void outMathSetList() {
         if (db.mathSets != null) {
             for (MathSet i : db.mathSets) {
-                System.out.println(i.getName() + " " + i);
+                if (i != null) {
+                    System.out.println(i.getName() + " " + i);
+                }
             }
         } else {
             System.out.println("MathSet не найдены!");
+            System.out.println("Создайте хотя бы один MathSet");
+            mathSetInput();
         }
     }
 
@@ -563,27 +558,11 @@ public class MathSetController {
         return new int[]{firstIndex, lastIndex};
     }
 
-    public static int inputInt() {
-        int result;
-        do {
-            result = parseIntWithoutExceptions(readLineWithoutExceptions());
-            if (result != Integer.MAX_VALUE) {
-                return result;
-            } else {
-                System.out.println("Ошибка! Только целые числа, пожалуйста!");
-            }
-        } while (result == Integer.MAX_VALUE);
-        return 0;
-    }
-
-
     public static MathSet[] stringToMathSetArray() {
         MathSet[] sets;
-
-        System.out.println("Введите несколько MathSet через пробел");
         do {
-            String inputString = readLineWithoutExceptions();
-            String[] mathSetNames = inputString.split(" ");
+            System.out.println("Введите несколько MathSet через пробел");
+            String[] mathSetNames = readLineWithoutExceptions().split(" ");
             sets = new MathSet[mathSetNames.length];
             int index = 0;
             for (String mathSet : mathSetNames) {
@@ -601,15 +580,13 @@ public class MathSetController {
     }
 
     public static Numbers[] stringToNumbersArray() {
-        System.out.println("Введите несколько имен Number[] через пробел");
         Numbers[] numbersArray;
-        String inputString;
         String[] inputStringArray;
         boolean wrongInput;
         do {
+            System.out.println("Введите несколько имен Number[] через пробел");
             wrongInput = false;
-            inputString = readLineWithoutExceptions();
-            inputStringArray = inputString.split(" ");
+            inputStringArray = readLineWithoutExceptions().split(" ");
             numbersArray = new Numbers[inputStringArray.length];
             int index = 0;
             for (String numberArray : inputStringArray) {
@@ -626,16 +603,24 @@ public class MathSetController {
         return numbersArray;
     }
 
+    public static boolean isMathSetNull(String name) {
+        if (db.mathSets == null) return true;
+        return db.getSet(name) == null;
+    }
+
+    public static boolean isNumbersNull(String name) {
+        if (db.numbers == null) return true;
+        return db.get(name) == null;
+    }
+
     public static Number[] stringToNumberArray() {
         System.out.println("Введите несколько Number через пробел");
         Number[] numbers;
-        String inputString;
         String[] inputStringArray;
         boolean wrongInput;
         do {
             wrongInput = false;
-            inputString = readLineWithoutExceptions();
-            inputStringArray = inputString.split(" ");
+            inputStringArray = readLineWithoutExceptions().split(" ");
             numbers = new Number[inputStringArray.length];
             int index = 0;
             for (String number : inputStringArray) {
@@ -673,6 +658,8 @@ public class MathSetController {
         return name;
     }
 
+    // Всё что ниже, можно вынести в библиотеку
+
     public static Number inputNumber() {
         Number number;
         do {
@@ -680,6 +667,19 @@ public class MathSetController {
         }
         while (number == null);
         return number;
+    }
+
+    public static int inputInt() {
+        int result;
+        do {
+            result = parseIntWithoutExceptions(readLineWithoutExceptions());
+            if (result != Integer.MAX_VALUE) {
+                return result;
+            } else {
+                System.out.println("Ошибка! Только целые числа, пожалуйста!");
+            }
+        } while (result == Integer.MAX_VALUE);
+        return 0;
     }
 
     public static Integer redundantZeros(String str) {
@@ -734,6 +734,10 @@ public class MathSetController {
                 break;
             }
         }
+        if (input.isEmpty()) {
+            System.out.println("Ошибка! Два пробела подряд");
+            result = true;
+        }
         if (input.indexOf(".") == 0) {
             System.out.println("Ошибка! Неверная запись десятичного числа (" + input + ")");
             result = true;
@@ -742,7 +746,6 @@ public class MathSetController {
             System.out.println("Ошибка! Неверная запись отрицательного числа (" + input + ")");
             result = true;
         }
-
         return result;
     }
 
@@ -768,16 +771,6 @@ public class MathSetController {
             number = Integer.parseInt(str);
         }
         return number;
-    }
-
-    public static boolean isMathSetNull(String name) {
-        if (db.mathSets == null) return true;
-        return db.getSet(name) == null;
-    }
-
-    public static boolean isNumbersNull(String name) {
-        if (db.numbers == null) return true;
-        return db.get(name) == null;
     }
 
     public static void line() {
