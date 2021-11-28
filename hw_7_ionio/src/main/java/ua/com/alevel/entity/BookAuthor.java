@@ -14,16 +14,8 @@ public class BookAuthor {
         this.id = id;
     }
 
-    public String getBookId() {
-        return bookId;
-    }
-
     public void setBookId(String bookId) {
         this.bookId = bookId;
-    }
-
-    public String getAuthorId() {
-        return authorId;
     }
 
     public void setAuthorId(String authorId) {

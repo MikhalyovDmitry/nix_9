@@ -3,7 +3,6 @@ package ua.com.alevel.db;
 import ua.com.alevel.FromFile;
 import ua.com.alevel.ToFile;
 import ua.com.alevel.entity.Author;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +12,6 @@ public class AuthorDB {
     private static AuthorDB instance;
     int size = 0;
     private Author[] authors;
-
     private AuthorDB() {
         authors = new Author[size];
     }

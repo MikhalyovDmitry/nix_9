@@ -2,7 +2,6 @@ package ua.com.alevel.dao;
 
 import ua.com.alevel.db.AuthorDB;
 import ua.com.alevel.entity.Author;
-
 import java.util.List;
 
 public class AuthorDao {

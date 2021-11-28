@@ -1,60 +1,25 @@
 package ua.com.alevel.controller;
 
 import ua.com.alevel.FromFile;
-import ua.com.alevel.ToFile;
 import ua.com.alevel.entity.Author;
 import ua.com.alevel.entity.Book;
 import ua.com.alevel.entity.BookAuthor;
 import ua.com.alevel.service.AuthorService;
 import ua.com.alevel.service.BookAuthorService;
 import ua.com.alevel.service.BookService;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-// реализовать при создании/изменении книги создание нового автора, или выбор существующего автора по Id
-// реализовать поиск всех книг автора
 
 public class BookController {
 
-    public final BookService bookService = new BookService();
+    private final BookService bookService = new BookService();
     private final AuthorService authorService = new AuthorService();
     private final BookAuthorService bookAuthorService = new BookAuthorService();
-
-    public static String notNullInput(BufferedReader reader) {
-        String result = null;
-        try {
-            do {
-                result = reader.readLine();
-                if (result.isEmpty())
-                    System.out.println("Ошибка! Название должно содержать хотя бы один символ!");
-            }
-            while (result.isEmpty());
-        } catch (IOException e) {
-            System.out.println("Error: = " + e.getMessage());
-        }
-        return result;
-    }
-
-    public static Book notNullBookById(BufferedReader reader) throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
-        BookService bookService = new BookService();
-        Book result = null;
-        String id;
-        try {
-            do {
-                id = reader.readLine();
-                result = bookService.findById(id);
-                if (result == null && !id.equals("0"))
-                    System.out.println("Ошибка! Введите правильный Id  или 0 для выхода:");
-            }
-            while (result == null && !id.equals("0"));
-        } catch (IOException e) {
-            System.out.println("Error: = " + e.getMessage());
-        }
-        return result;
-    }
+    private final AuthorController authorController = new AuthorController();
 
     public void run() throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -98,86 +63,61 @@ public class BookController {
     private void create(BufferedReader reader) throws NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         System.out.println("Введите название новой книги:");
         String name = notNullInput(reader);
-
-        // ввод нескольких авторов
-        System.out.println("Введите имя автора:");
-        String authorName = notNullInput(reader);
-        Author author = new Author();
-        if (authorService.findByName(authorName) == null) {
-            author.setName(authorName);
-            author.setDeleted(false);
-            authorService.create(author);
-        } else {
-            author = authorService.findByName(authorName);
-        }
+        System.out.println("Введите имя автора, или нескольких, разделенных пробелом:");
+        List<Author> authors = inputAuthorList(reader);
 
         Book book = new Book();
         book.setName(name);
         bookService.create(book);
 
-        BookAuthor relation = new BookAuthor();
-        relation.setBookId(book.getId());
-        relation.setAuthorId(author.getId());
-        bookAuthorService.create(relation);
+        for (Author author: authors) {
+            BookAuthor relation = new BookAuthor();
+            relation.setBookId(book.getId());
+            relation.setAuthorId(author.getId());
+            bookAuthorService.create(relation);
+        }
     }
 
     private void update(BufferedReader reader) throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         System.out.println("Введите Id книги, которую хотите изменить:");
-        Book book;
-        book = notNullBookById(reader);
+        Book book = notNullBookById(reader);
         if (book == null) {
             System.out.println("Id не был введен корректно");
             return;
         }
-        String bookId = book.getId();
-        String authorId;
-        List<Author> authorsList = FromFile.findRelation(Author.class, book.getId());
-        for (int i = 0; i < authorsList.size(); i++) {
-            authorId = authorService.findByName(authorsList.get(i).getName()).getId();
-            System.out.println(bookId + " " + authorId);
-            bookAuthorService.delete(bookId, authorId);
+
+        List<Author> thisBookAuthors = FromFile.findRelation(Author.class, book.getId());
+        for (Author author : thisBookAuthors) {
+            bookAuthorService.delete(book.getId(), author.getId());
         }
 
-        System.out.println("Введите название книги:");
+        System.out.println("Введите новое название книги:");
         String name = notNullInput(reader);
-
-        // сделать ввод нескольких авторов
-        System.out.println("Введите имя автора:");
-        String authorName = notNullInput(reader);
-        Author author = new Author();
-        if (authorService.findByName(authorName) == null) {
-            author.setName(authorName);
-            author.setDeleted(false);
-            authorService.create(author);
-        } else {
-            author = authorService.findByName(authorName);
-        }
+        System.out.println("Введите новое имя автора, или нескольких, разделенных пробелом:");
+        List<Author> authors = inputAuthorList(reader);
 
         book.setName(name);
         bookService.update(book);
 
-        BookAuthor relation = new BookAuthor();
-        relation.setBookId(book.getId());
-        relation.setAuthorId(author.getId());
-        bookAuthorService.create(relation);
+        for (Author author: authors) {
+            BookAuthor relation = new BookAuthor();
+            relation.setBookId(book.getId());
+            relation.setAuthorId(author.getId());
+            bookAuthorService.create(relation);
+        }
     }
 
     private void delete(BufferedReader reader) throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         System.out.println("Введите Id книги, которую хотите удалить:");
-        Book book;
-        book = notNullBookById(reader);
+        Book book = notNullBookById(reader);
         if (book == null) {
             System.out.println("Id не был введен корректно");
             return;
         }
 
-        String bookId = book.getId();
-        String authorId;
         List<Author> authorsList = FromFile.findRelation(Author.class, book.getId());
-        for (int i = 0; i < authorsList.size(); i++) {
-            authorId = authorService.findByName(authorsList.get(i).getName()).getId();
-            System.out.println(bookId + " " + authorId);
-            bookAuthorService.delete(bookId, authorId);
+        for (Author author : authorsList) {
+            bookAuthorService.delete(book.getId(), author.getId());
         }
 
         boolean deleteResult = bookService.delete(book.getId());
@@ -187,9 +127,8 @@ public class BookController {
     }
 
     private void findById(BufferedReader reader) throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
-        Book book;
         System.out.println("Введите Id книги, которую хотите найти:");
-        book = notNullBookById(reader);
+        Book book = notNullBookById(reader);
         if (book == null) {
             System.out.println("Id не был введен корректно");
         } else {
@@ -210,56 +149,103 @@ public class BookController {
         }
     }
 
-    // тоже через релешен вытянуть
     private void findAllAuthorBooks(BufferedReader reader) throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
-        Author author;
-        try {
-            System.out.println("Введите Id автора:");
-            do {
-                String id = reader.readLine();
-                author = authorService.findById(id);
-                if (author == null)
-                    System.out.println("Ошибка! Укажите правильный Id!");
-            }
-            while (author == null);
+        System.out.println("Введите id автора:");
+        Author author = authorController.notNullAuthorById(reader);
 
-            List<Book> books = authorService.findAllAuthorBooks(author);
-            System.out.println("Книги, найденные по указанному автору:");
-            if (books != null && books.size() != 0) {
-                for (Book book : books) {
-                    bookOutput(book);
-                }
-                separatingLine();
-            } else {
-                System.out.println("Книг не найдено!");
+        List<Book> books = authorService.findAllAuthorBooks(author);
+        System.out.println("Книги, найденные по указанному автору:");
+        if (books != null && books.size() != 0) {
+            for (Book book : books) {
+                bookOutput(book);
             }
-        } catch (IOException e) {
-            System.out.println("Error: = " + e.getMessage());
+            separatingLine();
+        } else {
+            System.out.println("Книг не найдено!");
         }
     }
 
     public void bookOutput(Book book) throws NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         List<Author> authorsList = FromFile.findRelation(Author.class, book.getId());
         StringBuilder authors = new StringBuilder();
-        for (Author author : authorsList) {
-            authors.append(author.getName()).append(", ");
+        for (int i = 0; i < authorsList.size(); i++) {
+            Author author = authorsList.get(i);
+            authors.append(author.getName());
+            if (author.isDeleted()) authors.append(" (DELETED)");
+            if (i != authorsList.size() - 1) authors.append(", ");
         }
-        if (authors.substring(authors.length() - 2).equals(", "))
-            authors.delete(authors.length() - 2, authors.length());
-
         separatingLine();
         System.out.println("Название       " + book.getName());
-        System.out.println("Автор          " + authors);
+        System.out.println("Автор(ы)       " + authors);
         System.out.println("ID Книги       " + book.getId());
     }
 
-    public static int parseIntWithoutExceptions(String number) {
-        int defaultValue = Integer.MAX_VALUE;
+    public static String notNullInput(BufferedReader reader) {
+        String result = null;
         try {
-            return Integer.parseInt(number);
-        } catch (NumberFormatException e) {
-            return defaultValue;
+            do {
+                result = reader.readLine();
+                if (result.isEmpty())
+                    System.out.println("Ошибка! Название должно содержать хотя бы один символ!");
+            }
+            while (result.isEmpty());
+        } catch (IOException e) {
+            System.out.println("Error: = " + e.getMessage());
         }
+        return result;
+    }
+
+    public static List<String> inputAuthors (BufferedReader reader) {
+        String inputString = null;
+        try {
+            do {
+                inputString = reader.readLine();
+                if (inputString.isEmpty())
+                    System.out.println("Ошибка! Хотя бы один символ!");
+            }
+            while (inputString.isEmpty());
+        } catch (IOException e) {
+            System.out.println("Error: = " + e.getMessage());
+        }
+        return Arrays.stream(inputString.split(" ")).toList();
+    }
+
+    public Book notNullBookById(BufferedReader reader) throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
+        Book result = null;
+        String id;
+        try {
+            do {
+                id = reader.readLine();
+                if (id.isEmpty()) {
+                    System.out.println("Хотя бы один символ!");
+                    continue;
+                }
+                result = bookService.findById(id);
+                if (result == null && !id.equals("0"))
+                    System.out.println("Ошибка! Введите правильный Id  или 0 для выхода:");
+            }
+            while (result == null && !id.equals("0"));
+        } catch (IOException e) {
+            System.out.println("Error: = " + e.getMessage());
+        }
+        return result;
+    }
+
+    public List<Author> inputAuthorList(BufferedReader reader) throws NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        List<String> authorNames = inputAuthors(reader);
+        List<Author> authors = new ArrayList<>();
+        for (String authorName: authorNames) {
+            Author author = new Author();
+            if (authorService.findByName(authorName) == null) {
+                author.setName(authorName);
+                author.setDeleted(false);
+                authorService.create(author);
+            } else {
+                author = authorService.findByName(authorName);
+            }
+            authors.add(author);
+        }
+        return authors;
     }
 
     private void separatingLine() {

@@ -74,8 +74,7 @@ public class AuthorController {
 
     private void delete(BufferedReader reader) throws InstantiationException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         System.out.println("Введите Id автора, которого хотите удалить:");
-        Author author;
-        author = notNullAuthorById(reader);
+        Author author = notNullAuthorById(reader);
         if (author == null) {
             System.out.println("Id не был введен корректно");
             return;
@@ -112,7 +111,6 @@ public class AuthorController {
         System.out.println("Имя        " + author.getName());
         System.out.println("ID Автора  " + author.getId());
         if (author.isDeleted()) System.out.println("DELETED");
-
     }
 
     public static String notNullInput(BufferedReader reader) {
@@ -130,8 +128,7 @@ public class AuthorController {
         return result;
     }
 
-    public static Author notNullAuthorById(BufferedReader reader) throws NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        AuthorService authorService = new AuthorService();
+    public Author notNullAuthorById(BufferedReader reader) throws NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         Author result = null;
         String id;
         try {

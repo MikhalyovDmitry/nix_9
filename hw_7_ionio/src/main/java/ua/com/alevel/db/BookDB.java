@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 // избавиться от GetInstance  и перенести в ДАО слой
-// генератор ИД подумать куда
-
-
-
+// генератор ИД тоже куда-нибудь
 public class BookDB {
 
     private static BookDB instance;

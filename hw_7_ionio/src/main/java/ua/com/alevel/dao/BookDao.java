@@ -1,9 +1,7 @@
 package ua.com.alevel.dao;
 
-import ua.com.alevel.ToFile;
 import ua.com.alevel.db.BookDB;
 import ua.com.alevel.entity.Book;
-
 import java.util.List;
 
 public class BookDao {
@@ -27,5 +25,4 @@ public class BookDao {
     public List<Book> findAll() throws NoSuchFieldException, InstantiationException, IllegalAccessException {
         return BookDB.getInstance().findAll();
     }
-
 }
