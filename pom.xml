@@ -32,10 +32,6 @@
         <module>hw_7_ionio</module>
         <module>module_2</module>
         <module>csv</module>
-
-
-
-
     </modules>
 
     <packaging>pom</packaging>
