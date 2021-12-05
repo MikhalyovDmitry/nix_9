@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="utf-8">
+    <title>Products</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-2 mt-2">
+                <div class="card-header">
+                    All Products
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>InStock</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="product,iter : ${products}">
+                            <td th:text="${iter.count}"></td>
+                            <td th:text="${product.getName()}"></td>
+                            <td th:text="${product.getPrice()}"></td>
+                            <td th:text="${product.isInStock()}"></td>
+                            <!--                            <td>-->
+                            <!--                                <a th:href="@{'/departments/details/' + ${employee.getDepartment().getId()}}" type="button" class="btn btn-link" th:text="${employee.getDepartment().getId()}">details</a>-->
+                            <!--                            </td>-->
+                            <!--                            <td th:text="${#calendars.format(employee.getCreated(),'dd MMMM yyyy')}"></td>-->
+                            <td>
+                                <a th:href="@{'/products/details/' + ${product.getId()}}" type="button"
+                                   class="btn btn-primary">details</a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/products/update/' + ${product.getId()}}" type="button"
+                                   class="btn btn-primary">edit</a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/products/delete/' + ${product.getId()}}" type="button"
+                                   class="btn btn-danger">delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="utf-8">
+    <title>Product Details</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-2 mt-2">
+                <div class="card-header">
+                    Product Details
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Id</th>
+                            <td th:text="${product.getId()}"></td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td th:text="${product.getName()}"></td>
+                        </tr>
+                        <tr>
+                            <th>Price</th>
+                            <td th:text="${product.getPrice()}"></td>
+                        </tr>
+                        <tr>
+                            <th>InStock status</th>
+                            <td th:text="${product.isInStock()}"></td>
+                        </tr>
+                    </table>
+                    <table class="table table-sm table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Delivered</th>
+                            <th>Created</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order,iter : ${orders}">
+                            <td th:text="${iter.count}"></td>
+                            <td th:text="${order.getCustomer()}"></td>
+                            <td th:text="${order.isDelivered()}"></td>
+                            <td th:text="${#calendars.format(order.getCreated(),'dd MMMM yyyy')}"></td>
+                            <td>
+                                <a th:href="@{'/orders/delete/order/' + ${product.getId()} + '/' + ${order.getId()}}"
+                                   type="button" class="btn btn-danger">delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div>
+                        <a th:href="@{'/orders/add/' + ${product.getId()}}" type="button" class="btn btn-primary">Add
+                            order</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
