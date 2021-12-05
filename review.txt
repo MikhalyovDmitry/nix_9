@@ -27,3 +27,6 @@ ua/com/alevel/entity/Book.java:6
 
 hw_5 = 9
 hw_6 = 9
+
+hw_7 = 9
+module_2 = 9
