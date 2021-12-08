@@ -1,7 +1,7 @@
 package ua.com.alevel;
 
-import ua.com.alevel.controller.AuthorController;
-import ua.com.alevel.controller.BookController;
+import ua.com.alevel.view.controller.AuthorController;
+import ua.com.alevel.view.controller.BookController;
 
 import java.io.BufferedReader;
 import java.io.IOException;

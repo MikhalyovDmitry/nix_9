@@ -1,6 +1,6 @@
 package ua.com.alevel.db;
 
-import ua.com.alevel.entity.Author;
+import ua.com.alevel.persistence.entity.Author;
 
 import java.util.Arrays;
 import java.util.UUID;

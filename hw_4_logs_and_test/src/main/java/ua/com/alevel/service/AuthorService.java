@@ -2,10 +2,10 @@ package ua.com.alevel.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.com.alevel.dao.BookDao;
-import ua.com.alevel.dao.AuthorDao;
-import ua.com.alevel.entity.Author;
-import ua.com.alevel.entity.Book;
+import ua.com.alevel.persistence.dao.BookDao;
+import ua.com.alevel.persistence.dao.AuthorDao;
+import ua.com.alevel.persistence.entity.Author;
+import ua.com.alevel.persistence.entity.Book;
 
 public class AuthorService {
 

@@ -1,8 +1,6 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.entity.Product;
-
-import java.util.List;
+import ua.com.alevel.persistence.entity.Product;
 
 public interface ProductService extends BaseService<Product> {
 

@@ -1,8 +1,10 @@
 package ua.com.alevel.service.impl;
 
 import org.springframework.stereotype.Service;
-import ua.com.alevel.dao.OrderProductDao;
-import ua.com.alevel.entity.OrderProduct;
+import ua.com.alevel.persistence.dao.OrderProductDao;
+import ua.com.alevel.persistence.datatable.DataTableRequest;
+import ua.com.alevel.persistence.datatable.DataTableResponse;
+import ua.com.alevel.persistence.entity.OrderProduct;
 import ua.com.alevel.service.OrderProductService;
 
 import java.util.List;
@@ -49,13 +51,21 @@ public class OrderProductServiceImpl implements OrderProductService {
         return orderProductDao.findByProductId(productId);
     }
 
-    @Override
-    public List<OrderProduct> findAll() {
-        return orderProductDao.findAll();
-    }
+//    @Override
+//    public List<OrderProduct> findAll() {
+//        return orderProductDao.findAll();
+//    }
 
     @Override
     public OrderProduct findByOrderIdAndProductId(Long productId, Long orderId) {
         return orderProductDao.findByOrderIdAndProductId(productId, orderId);
+    }
+
+    @Override
+    public DataTableResponse<OrderProduct> findAll(DataTableRequest request) {
+        DataTableResponse<OrderProduct> dataTableResponse = orderProductDao.findAll(request);
+        long count = orderProductDao.count();
+        dataTableResponse.setItemsSize(count);
+        return dataTableResponse;
     }
 }

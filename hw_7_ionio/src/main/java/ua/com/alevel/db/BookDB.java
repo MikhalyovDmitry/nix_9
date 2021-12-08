@@ -2,7 +2,7 @@ package ua.com.alevel.db;
 
 import ua.com.alevel.FromFile;
 import ua.com.alevel.ToFile;
-import ua.com.alevel.entity.Book;
+import ua.com.alevel.persistence.entity.Book;
 
 import java.util.ArrayList;
 import java.util.List;

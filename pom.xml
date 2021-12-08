@@ -33,7 +33,6 @@
         <module>module_2</module>
         <module>csv</module>
         <module>hw_8_web_jdbc</module>
-
     </modules>
 
     <packaging>pom</packaging>

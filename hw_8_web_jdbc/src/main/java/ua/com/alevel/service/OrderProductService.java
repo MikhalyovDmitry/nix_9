@@ -1,6 +1,6 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.entity.OrderProduct;
+import ua.com.alevel.persistence.entity.OrderProduct;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.dao.BookDao;
-import ua.com.alevel.entity.Book;
+import ua.com.alevel.persistence.dao.BookDao;
+import ua.com.alevel.persistence.entity.Book;
 
 public class BookService {
     private final BookDao bookDao = new BookDao();

@@ -1,7 +1,7 @@
 package ua.com.alevel.db;
 
 import ua.com.alevel.ToFile;
-import ua.com.alevel.entity.BookAuthor;
+import ua.com.alevel.persistence.entity.BookAuthor;
 import java.util.UUID;
 
 public class BookAuthorDB {

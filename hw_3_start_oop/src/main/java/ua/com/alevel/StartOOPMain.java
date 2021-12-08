@@ -1,6 +1,6 @@
 package ua.com.alevel;
 
-import ua.com.alevel.controller.ModelController;
+import ua.com.alevel.view.controller.ModelController;
 
 public class StartOOPMain {
 

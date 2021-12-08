@@ -1,7 +1,7 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.dao.BookAuthorDao;
-import ua.com.alevel.entity.BookAuthor;
+import ua.com.alevel.persistence.dao.BookAuthorDao;
+import ua.com.alevel.persistence.entity.BookAuthor;
 
 public class BookAuthorService {
 

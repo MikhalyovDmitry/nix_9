@@ -1,9 +1,9 @@
 package ua.com.alevel.facade;
 
-import ua.com.alevel.dto.order.OrderResponseDto;
-import ua.com.alevel.dto.orderproduct.OrderProductRequestDto;
-import ua.com.alevel.dto.orderproduct.OrderProductResponseDto;
-import ua.com.alevel.dto.product.ProductResponseDto;
+import ua.com.alevel.view.dto.response.OrderResponseDto;
+import ua.com.alevel.view.dto.request.OrderProductRequestDto;
+import ua.com.alevel.view.dto.response.OrderProductResponseDto;
+import ua.com.alevel.view.dto.response.ProductResponseDto;
 
 import java.util.List;
 

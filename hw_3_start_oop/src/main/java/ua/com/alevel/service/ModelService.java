@@ -1,7 +1,7 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.dao.ModelDao;
-import ua.com.alevel.entity.Model;
+import ua.com.alevel.persistence.dao.ModelDao;
+import ua.com.alevel.persistence.entity.Model;
 
 public class ModelService {
 

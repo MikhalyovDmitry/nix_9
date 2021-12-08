@@ -1,6 +1,6 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.entity.Author;
+import ua.com.alevel.persistence.entity.Author;
 
 public class AuthorGenerationUtil {
 

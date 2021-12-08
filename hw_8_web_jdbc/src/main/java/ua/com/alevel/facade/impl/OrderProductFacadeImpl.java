@@ -1,13 +1,20 @@
 package ua.com.alevel.facade.impl;
 
 import org.springframework.stereotype.Service;
-import ua.com.alevel.dto.order.OrderResponseDto;
-import ua.com.alevel.dto.orderproduct.OrderProductRequestDto;
-import ua.com.alevel.dto.orderproduct.OrderProductResponseDto;
-import ua.com.alevel.dto.product.ProductResponseDto;
-import ua.com.alevel.entity.Order;
-import ua.com.alevel.entity.OrderProduct;
-import ua.com.alevel.entity.Product;
+import org.springframework.web.context.request.WebRequest;
+import ua.com.alevel.persistence.datatable.DataTableRequest;
+import ua.com.alevel.persistence.datatable.DataTableResponse;
+import ua.com.alevel.util.WebRequestUtil;
+import ua.com.alevel.view.dto.request.PageAndSizeData;
+import ua.com.alevel.view.dto.request.SortData;
+import ua.com.alevel.view.dto.response.OrderResponseDto;
+import ua.com.alevel.view.dto.request.OrderProductRequestDto;
+import ua.com.alevel.view.dto.response.OrderProductResponseDto;
+import ua.com.alevel.view.dto.response.PageData;
+import ua.com.alevel.view.dto.response.ProductResponseDto;
+import ua.com.alevel.persistence.entity.Order;
+import ua.com.alevel.persistence.entity.OrderProduct;
+import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.facade.OrderProductFacade;
 import ua.com.alevel.service.OrderProductService;
 import ua.com.alevel.service.OrderService;
@@ -97,11 +104,43 @@ public class OrderProductFacadeImpl implements OrderProductFacade {
         return new OrderProductResponseDto(orderProduct);
     }
 
+//    @Override
+//    public List<OrderProductResponseDto> findAll() {
+//        return orderProductService.findAll()
+//                .stream()
+//                .map(OrderProductResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
+
     @Override
-    public List<OrderProductResponseDto> findAll() {
-        return orderProductService.findAll()
-                .stream()
-                .map(OrderProductResponseDto::new)
-                .collect(Collectors.toList());
+    public PageData<OrderProductResponseDto> findAll(WebRequest request) {
+        PageAndSizeData pageAndSizeData = WebRequestUtil.generatePageAndSizeData(request);
+        SortData sortData = WebRequestUtil.generateSortData(request);
+        DataTableRequest dataTableRequest = new DataTableRequest();
+        dataTableRequest.setPageSize(pageAndSizeData.getSize());
+        dataTableRequest.setCurrentPage(pageAndSizeData.getPage());
+        dataTableRequest.setSort(sortData.getSort());
+        dataTableRequest.setOrder(sortData.getOrder());
+
+        DataTableResponse<OrderProduct> all = orderProductService.findAll(dataTableRequest);
+
+        List<OrderProductResponseDto> list = all.getItems().
+                stream().
+                map(OrderProductResponseDto::new).
+                collect(Collectors.toList());
+
+        PageData<OrderProductResponseDto> pageData = new PageData<>();
+        pageData.setItems(list);
+        pageData.setCurrentPage(pageAndSizeData.getPage());
+        pageData.setPageSize(pageAndSizeData.getSize());
+        pageData.setOrder(sortData.getOrder());
+        pageData.setSort(sortData.getSort());
+        pageData.setItemsSize(all.getItemsSize());
+        pageData.initPaginationState(pageData.getCurrentPage());
+
+        System.out.println("FROM " + pageData.getCurrentShowFromEntries() + ", TO " + pageData.getCurrentShowToEntries());
+
+        System.out.println("pageData = " + pageData);
+        return pageData;
     }
 }
