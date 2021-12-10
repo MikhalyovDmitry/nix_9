@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="utf-8">
+    <title>Add Order</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-2 mt-2">
+                <div class="card-header">
+                    All Orders
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Delivered</th>
+                            <th>Created</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order,iter : ${orders}">
+                            <td th:text="${iter.count}"></td>
+                            <td th:text="${order.getCustomer()}"></td>
+                            <td th:text="${order.isDelivered()}"></td>
+                            <td th:text="${#calendars.format(order.getCreated(),'dd MMMM yyyy')}"></td>
+                            <td>
+                                <a th:href="@{'/orders/order/' + ${product.getId()} + '/' +${order.getId()}}"
+                                   type="button" class="btn btn-primary">Add</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
