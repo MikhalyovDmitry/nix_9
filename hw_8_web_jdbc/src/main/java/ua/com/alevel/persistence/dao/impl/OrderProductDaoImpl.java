@@ -62,8 +62,6 @@ public class OrderProductDaoImpl implements OrderProductDao {
         try (ResultSet resultSet = jpaConfig.getStatement().executeQuery(EXIST_ORDER_PRODUCT_BY_ID_QUERY + id)) {
             while (resultSet.next()) {
                 count = resultSet.getLong("COUNT(*)");
-                //System.out.println("count = " + count + "order_product with id = " + id + " doesn't exist");
-
             }
         } catch (SQLException e) {
             System.out.println("problem: = " + e.getMessage());
@@ -108,20 +106,6 @@ public class OrderProductDaoImpl implements OrderProductDao {
         }
         return orderProducts;
     }
-
-
-//    @Override
-//    public List<OrderProduct> findAll() {
-//        List<OrderProduct> orderProducts = new ArrayList<>();
-//        try (ResultSet resultSet = jpaConfig.getStatement().executeQuery(FIND_ALL_ORDER_PRODUCTS_QUERY)) {
-//            while (resultSet.next()) {
-//                orderProducts.add(initOrderProductByResultSet(resultSet));
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("problem: = " + e.getMessage());
-//        }
-//        return orderProducts;
-//    }
 
     private OrderProduct initOrderProductByResultSet(ResultSet resultSet) throws SQLException {
         OrderProduct orderProduct = new OrderProduct();

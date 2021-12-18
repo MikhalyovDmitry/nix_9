@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="utf-8">
+    <title>Account Details</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-2 mt-2">
+                <div class="card-header">
+                    Account Details
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Id</th>
+                            <td th:text="${account.getId()}"></td>
+                        </tr>
+                        <tr>
+                            <th>Balance</th>
+                            <td th:text="${account.getBalance()}"></td>
+                        </tr>
+                        <tr>
+                            <th>User</th>
+                            <td th:text="${account.getUser()}"></td>
+                        </tr>
+                        <tr>
+                            <th>Created</th>
+                            <td th:text="${#calendars.format(account.getCreated(),'dd MMMM yyyy')}"></td>
+                        </tr>
+                    </table>
+                    <table class="table table-sm table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Value</th>
+<!--                            <th>-->
+<!--                                <a th:href="@{'/users/open/' + ${user.getId()}}"-->
+<!--                                   type="button" class="btn btn-primary">Open Account</a>-->
+<!--                            </th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="operation,iter : ${operations}">
+                            <td th:text="${operation.getId()}"></td>
+                            <td th:text="${operation.getName()}"></td>
+                            <td th:text="${operation.getCategory()}"></td>
+                            <td th:text="${operation.getValue()}"></td>
+<!--                            <td>-->
+<!--                                <a th:href="@{'/accounts/operate/' + ${account.getId()}}"-->
+<!--                                   type="button" class="btn btn-primary">Operate</a>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <a th:href="@{'/users/close/' + ${user.getId()} + '/' + ${account.getId()}}"-->
+<!--                                   type="button" class="btn btn-danger">Close</a>-->
+<!--                            </td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <div>
+                        <a th:href="@{'/accounts/csv/' + ${account.getId()}}" type="button" class="btn btn-primary">CSV Statement</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

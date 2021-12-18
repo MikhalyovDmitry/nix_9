@@ -83,19 +83,6 @@ public class ProductDaoImpl implements ProductDao {
         return null;
     }
 
-//    @Override
-//    public List<Product> findAll() {
-//        List<Product> products = new ArrayList<>();
-//        try (ResultSet resultSet = jpaConfig.getStatement().executeQuery(FIND_ALL_PRODUCTS_QUERY)) {
-//            while (resultSet.next()) {
-//                products.add(initEmployeeByResultSet(resultSet));
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("problem: = " + e.getMessage());
-//        }
-//        return products;
-//    }
-
     private Product initProductByResultSet(ResultSet resultSet) throws SQLException {
         Product product = new Product();
         long id = resultSet.getLong("id");
@@ -120,8 +107,6 @@ public class ProductDaoImpl implements ProductDao {
                 request.getOrder() + " limit " +
                 limit + "," +
                 request.getPageSize();
-
-        System.out.println("sql = " + sql);
 
         try(ResultSet resultSet = jpaConfig.getStatement().executeQuery(sql)) {
             while (resultSet.next()) {

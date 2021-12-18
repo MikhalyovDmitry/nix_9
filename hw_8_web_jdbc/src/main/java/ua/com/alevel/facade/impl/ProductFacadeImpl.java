@@ -59,11 +59,6 @@ public class ProductFacadeImpl implements ProductFacade {
         return new ProductResponseDto(productService.findById(id));
     }
 
-//    @Override
-//    public List<ProductResponseDto> findAll() {
-//        return convertToDtoByEntity(productService.findAll());
-//    }
-
     @Override
     public PageData<ProductResponseDto> findAll(WebRequest request) {
         PageAndSizeData pageAndSizeData = WebRequestUtil.generatePageAndSizeData(request);
@@ -89,10 +84,6 @@ public class ProductFacadeImpl implements ProductFacade {
         pageData.setSort(sortData.getSort());
         pageData.setItemsSize(all.getItemsSize());
         pageData.initPaginationState(pageData.getCurrentPage());
-
-        System.out.println("FROM " + pageData.getCurrentShowFromEntries() + ", TO " + pageData.getCurrentShowToEntries());
-
-        System.out.println("pageData = " + pageData);
         return pageData;
     }
 

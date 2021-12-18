@@ -34,7 +34,7 @@
         <module>csv</module>
         <module>hw_8_web_jdbc</module>
         <module>hw_9_web_jpa</module>
-
+        <module>module_3</module>
     </modules>
 
     <packaging>pom</packaging>

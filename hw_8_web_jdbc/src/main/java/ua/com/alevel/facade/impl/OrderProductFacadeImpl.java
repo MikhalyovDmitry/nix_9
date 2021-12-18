@@ -104,14 +104,6 @@ public class OrderProductFacadeImpl implements OrderProductFacade {
         return new OrderProductResponseDto(orderProduct);
     }
 
-//    @Override
-//    public List<OrderProductResponseDto> findAll() {
-//        return orderProductService.findAll()
-//                .stream()
-//                .map(OrderProductResponseDto::new)
-//                .collect(Collectors.toList());
-//    }
-
     @Override
     public PageData<OrderProductResponseDto> findAll(WebRequest request) {
         PageAndSizeData pageAndSizeData = WebRequestUtil.generatePageAndSizeData(request);
@@ -137,10 +129,6 @@ public class OrderProductFacadeImpl implements OrderProductFacade {
         pageData.setSort(sortData.getSort());
         pageData.setItemsSize(all.getItemsSize());
         pageData.initPaginationState(pageData.getCurrentPage());
-
-        System.out.println("FROM " + pageData.getCurrentShowFromEntries() + ", TO " + pageData.getCurrentShowToEntries());
-
-        System.out.println("pageData = " + pageData);
         return pageData;
     }
 }

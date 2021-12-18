@@ -25,19 +25,26 @@ public class PageData<REQ extends ResponseDto> {
 
     public PageData() {
         this.currentPage = 0;
-        this.pageSize = 10;
+        this.pageSize = 5;
         this.totalPageSize = 10;
         this.itemsSize = 0;
         this.items = new ArrayList<>();
-        this.pageSizeItems = new int[]{ 10, 25, 50, 100 };
+        this.pageSizeItems = new int[]{ 5, 10, 25, 50 };
         this.showFirst = false;
         this.showPrevious = false;
         this.showNext = false;
         this.showLast = false;
-        System.out.println("TOTAL PAGE SIZE = " + totalPageSize);
+
     }
 
     public void initPaginationState(int page) {
+        long from = (long) (page - 1) * pageSize + 1;
+        long to = (long) page * pageSize;
+        if (to > itemsSize)
+            to = itemsSize;
+        this.setCurrentShowFromEntries(from);
+        this.setCurrentShowToEntries(to);
+        this.totalPageSize = (int) (itemsSize / pageSize + 1);
         this.showFirst = page != 1;
         this.showLast = page != totalPageSize;
         this.showNext = page != totalPageSize;

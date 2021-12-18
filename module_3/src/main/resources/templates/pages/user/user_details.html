@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="utf-8">
+    <title>User Details</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-2 mt-2">
+                <div class="card-header">
+                    User Details
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Id</th>
+                            <td th:text="${user.getId()}"></td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td th:text="${user.getName()}"></td>
+                        </tr>
+                        <tr>
+                            <th>Password</th>
+                            <td th:text="${user.getPassword()}"></td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td th:text="${user.getPhone()}"></td>
+                        </tr>
+                    </table>
+                    <table class="table table-sm table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Balance</th>
+                            <th>
+                                <a th:href="@{'/users/open/' + ${user.getId()}}"
+                                   type="button" class="btn btn-primary">Open Account</a>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="account,iter : ${accounts}">
+                            <td th:text="${account.getId()}"></td>
+                            <td th:text="${account.getBalance()}"></td>
+                            <td>
+                                <a th:href="@{'/accounts/operate/' + ${account.getId()}}"
+                                   type="button" class="btn btn-primary">Operate</a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/accounts/transfer/' + ${account.getId()}}"
+                                   type="button" class="btn btn-primary">Transfer</a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/accounts/details/' + ${account.getId()}}"
+                                   type="button" class="btn btn-primary">Details</a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/users/close/' + ${user.getId()} + '/' + ${account.getId()}}"
+                                   type="button" class="btn btn-danger">Close</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+<!--                    <div>-->
+<!--                        <a th:href="@{'/products/add/' + ${order.getId()}}" type="button" class="btn btn-primary">Add-->
+<!--                            product</a>-->
+<!--                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

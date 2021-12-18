@@ -49,7 +49,6 @@ public class ProductController extends AbstractController {
                 new HeaderName("", null, null)
         };
         PageData<ProductResponseDto> response = productFacade.findAll(webRequest);
-        System.out.println(response.getItems().get(3).getPrice());
         response.initPaginationState(response.getCurrentPage());
         List<HeaderData> headerDataList = new ArrayList<>();
         for (HeaderName headerName : columnNames) {
@@ -88,7 +87,6 @@ public class ProductController extends AbstractController {
     }
 
     @GetMapping("/new")
-    //@GetMapping("/new/{departmentId}")
     public String redirectToNewProductPage(Model model) {
         model.addAttribute("product", new ProductRequestDto());
         return "pages/product/product_new";

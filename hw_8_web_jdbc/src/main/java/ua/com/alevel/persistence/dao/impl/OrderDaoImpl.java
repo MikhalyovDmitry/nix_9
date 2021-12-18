@@ -65,7 +65,6 @@ public class OrderDaoImpl implements OrderDao {
         try (ResultSet resultSet = jpaConfig.getStatement().executeQuery(EXIST_ORDER_BY_ID_QUERY + id)) {
             while (resultSet.next()) {
                 count = resultSet.getLong("COUNT(*)");
-                System.out.println("count = " + count);
             }
         } catch (SQLException e) {
             System.out.println("problem: = " + e.getMessage());
@@ -84,19 +83,6 @@ public class OrderDaoImpl implements OrderDao {
         }
         return null;
     }
-
-//    @Override
-//    public List<Order> findAll() {
-//        List<Order> orders = new ArrayList<>();
-//        try (ResultSet resultSet = jpaConfig.getStatement().executeQuery(FIND_ALL_ORDERS_QUERY)) {
-//            while (resultSet.next()) {
-//                orders.add(initCustomerByResultSet(resultSet));
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("problem: = " + e.getMessage());
-//        }
-//        return orders;
-//    }
 
     private Order initCustomerByResultSet(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
@@ -124,8 +110,6 @@ public class OrderDaoImpl implements OrderDao {
                 request.getOrder() + " limit " +
                 limit + "," +
                 request.getPageSize();
-
-        System.out.println("sql = " + sql);
 
         try(ResultSet resultSet = jpaConfig.getStatement().executeQuery(sql)) {
             while (resultSet.next()) {
