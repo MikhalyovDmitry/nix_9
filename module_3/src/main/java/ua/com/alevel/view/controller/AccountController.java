@@ -48,13 +48,10 @@ public class AccountController extends AbstractController {
     @GetMapping
     public String findAll(Model model, WebRequest webRequest) {
         AbstractController.HeaderName[] columnNames = new AbstractController.HeaderName[] {
-                new AbstractController.HeaderName("#", null, null),
-                new AbstractController.HeaderName("User", "user", "user"),
+                new AbstractController.HeaderName("Id", "id", "id"),
+                new AbstractController.HeaderName("User name", "user", "user"),
                 new AbstractController.HeaderName("Balance", "balance", "balance"),
-                new AbstractController.HeaderName("", null, null),
-                new AbstractController.HeaderName("", null, null),
-                new AbstractController.HeaderName("", null, null),
-                new AbstractController.HeaderName("", null, null)
+                new AbstractController.HeaderName("Created", "created", "created"),
         };
         PageData<AccountResponseDto> response = accountFacade.findAll(webRequest);
         response.initPaginationState(response.getCurrentPage());
@@ -105,15 +102,16 @@ public class AccountController extends AbstractController {
     }
 
     @PostMapping("/operate/{id}")
-    public String createOperation(@PathVariable Long id, @ModelAttribute("operation") OperationRequestDto operationRequestDto) {
+    public String createOperation(@PathVariable Long id, @ModelAttribute("operation") OperationRequestDto operationRequestDto, Model model) {
         operationRequestDto.setAccountId(id);
         Long operationId = operationFacade.create(operationRequestDto).getId();
         accountFacade.addOperation(id, operationId);
-        return "redirect:/accounts";
+        accountDetails(id, model);
+        return "pages/account/account_details";
     }
 
     @GetMapping("/details/{id}")
-    public String accountDetails(@PathVariable Long id, Model model) throws IOException {
+    public String accountDetails(@PathVariable Long id, Model model) {
         AccountResponseDto account = accountFacade.findById(id);
         List<OperationResponseDto> operations = accountFacade.getOperations(id);
         model.addAttribute("account", account);
@@ -141,28 +139,21 @@ public class AccountController extends AbstractController {
         String password = "Qqq111!!!";
 
         Path myPath = Paths.get(fileName);
-
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM operations WHERE account_id =" + id);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-
             try (CSVWriter writer = new CSVWriter(Files.newBufferedWriter(myPath,
                     StandardCharsets.UTF_8), CSVWriter.DEFAULT_SEPARATOR,
                     CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END)) {
-
                 writer.writeAll(resultSet, true);
             }
-
         } catch (IOException | SQLException ex) {
             System.out.println("An error occurred by SQL or IO");
             ex.printStackTrace();
         }
 
-        AccountResponseDto account = accountFacade.findById(id);
-        List<OperationResponseDto> operations = accountFacade.getOperations(id);
-        model.addAttribute("account", account);
-        model.addAttribute("operations", operations);
+        accountDetails(id, model);
         return  "pages/account/account_details";
     }
 
@@ -184,7 +175,7 @@ public class AccountController extends AbstractController {
     }
 
     @PostMapping("/transfer/{senderId}/{recipientId}")
-    public String commit(@PathVariable Long senderId, @PathVariable Long recipientId, @ModelAttribute("operation") OperationRequestDto operationRequestDto) {
+    public String commit(@PathVariable Long senderId, @PathVariable Long recipientId, @ModelAttribute("operation") OperationRequestDto operationRequestDto, Model model) {
         operationRequestDto.setAccountId(senderId);
         operationRequestDto.setCategory(Category.EXPENSE);
         Long operationId = operationFacade.create(operationRequestDto).getId();
@@ -194,6 +185,8 @@ public class AccountController extends AbstractController {
         operationRequestDto.setCategory(Category.INCOME);
         Long operationIdTwo = operationFacade.create(operationRequestDto).getId();
         accountFacade.addOperation(recipientId, operationIdTwo);
-        return "redirect:/accounts";
+
+        accountDetails(senderId, model);
+        return "pages/account/account_details";
     }
 }

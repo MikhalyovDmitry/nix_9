@@ -16,7 +16,6 @@ import ua.com.alevel.view.dto.response.PageData;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +30,9 @@ public class OperationFacadeImpl implements OperationFacade {
 
     @Override
     public OperationResponseDto create(OperationRequestDto operationRequestDto) {
+        System.out.println(Double.parseDouble(operationRequestDto.getValue()));
+        if (Double.parseDouble(operationRequestDto.getValue()) == 0)
+            return null;
         Operation operation = new Operation();
         operation.setValue(operationRequestDto.getValue());
         operation.setName(operationRequestDto.getName());

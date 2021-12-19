@@ -1,5 +1,7 @@
 package ua.com.alevel.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.com.alevel.persistence.dao.UserDao;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserDao userDao;
 
@@ -62,5 +66,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeAccount(Long userId, Long accountId) {
         userDao.removeAccount(userId, accountId);
+        LOGGER.info("Account with id = " + accountId + " deleted for user with id = " + userId);
     }
 }

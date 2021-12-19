@@ -1,5 +1,7 @@
 package ua.com.alevel.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ua.com.alevel.persistence.dao.AccountDao;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
@@ -13,6 +15,8 @@ import java.util.List;
 @Service
 public class AccountServiceImpl implements AccountService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+
     private final AccountDao accountDao;
 
     public AccountServiceImpl(AccountDao accountDao) {
@@ -22,6 +26,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void create(Account account) {
         accountDao.create(account);
+        LOGGER.info("Account created:" +
+                " id = " + account.getId() +
+                " balance = " + account.getBalance() +
+                " userId = " + account.getUserId());
     }
 
     @Override

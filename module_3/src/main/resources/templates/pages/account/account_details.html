@@ -35,6 +35,10 @@
                             <th>Created</th>
                             <td th:text="${#calendars.format(account.getCreated(),'dd MMMM yyyy')}"></td>
                         </tr>
+                        <tr>
+                            <th>Operations</th>
+                            <td></td>
+                        </tr>
                     </table>
                     <table class="table table-sm table-hover">
                         <thead>
@@ -43,10 +47,7 @@
                             <th>Name</th>
                             <th>Category</th>
                             <th>Value</th>
-<!--                            <th>-->
-<!--                                <a th:href="@{'/users/open/' + ${user.getId()}}"-->
-<!--                                   type="button" class="btn btn-primary">Open Account</a>-->
-<!--                            </th>-->
+                            <th>Created</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -55,14 +56,7 @@
                             <td th:text="${operation.getName()}"></td>
                             <td th:text="${operation.getCategory()}"></td>
                             <td th:text="${operation.getValue()}"></td>
-<!--                            <td>-->
-<!--                                <a th:href="@{'/accounts/operate/' + ${account.getId()}}"-->
-<!--                                   type="button" class="btn btn-primary">Operate</a>-->
-<!--                            </td>-->
-<!--                            <td>-->
-<!--                                <a th:href="@{'/users/close/' + ${user.getId()} + '/' + ${account.getId()}}"-->
-<!--                                   type="button" class="btn btn-danger">Close</a>-->
-<!--                            </td>-->
+                            <td th:text="${#calendars.format(operation.getCreated(),'dd/MM/yyyy HH:mm')}"></td>
                         </tr>
                         </tbody>
                     </table>

@@ -5,7 +5,7 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="utf-8">
-    <title>New Operation</title>
+    <title>New Transfer</title>
 </head>
 <body>
 
@@ -15,7 +15,7 @@
         <div class="col-12">
             <div class="card mt-2">
                 <div class="card-header">
-                    <h4>New Operation</h4>
+                    <h4>New Transfer</h4>
                 </div>
                 <div class="card-body">
                     <form action="#" th:action="@{'/accounts/transfer/' + ${senderId} + '/' +${recipientId}}" th:object="${operation}" method="post">
@@ -29,25 +29,6 @@
                             <input type="text" class="form-control" id="value" aria-describedby="value"
                                    placeholder="Enter value" th:field="*{value}">
                         </div>
-<!--                        <div class="form-group">-->
-<!--                            <label for="category">Select category</label>-->
-<!--                            <select class="form-control" id="category" th:field="*{category}">-->
-<!--                                <option th:each="category : ${categories}"-->
-<!--                                        th:value="${category}"-->
-<!--                                        th:text="${category}">-->
-<!--                                </option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-                        <!--                        <div class="form-group">-->
-                        <!--                            <label for="password">Password</label>-->
-                        <!--                            <input type="text" class="form-control" id="password" aria-describedby="password"-->
-                        <!--                                   placeholder="Enter password" th:field="*{password}">-->
-                        <!--                        </div>-->
-                        <!--                        <div class="form-group">-->
-                        <!--                            <label for="phone">Phone</label>-->
-                        <!--                            <input type="text" class="form-control" id="phone" aria-describedby="phone"-->
-                        <!--                                   placeholder="Enter phone" th:field="*{phone}">-->
-                        <!--                        </div>-->
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>

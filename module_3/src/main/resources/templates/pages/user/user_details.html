@@ -35,17 +35,15 @@
                             <th>Phone</th>
                             <td th:text="${user.getPhone()}"></td>
                         </tr>
+                        <tr>
+                            <th>Accounts</th>
+                            <td></td>
                     </table>
                     <table class="table table-sm table-hover">
                         <thead>
                         <tr>
                             <th>ID</th>
                             <th>Balance</th>
-                            <th>
-                                <a th:href="@{'/users/open/' + ${user.getId()}}"
-                                   type="button" class="btn btn-primary">Open Account</a>
-                            </th>
-                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -75,11 +73,13 @@
                         </tr>
                         </tbody>
                     </table>
+                        </tr>
+
                     <hr>
-<!--                    <div>-->
-<!--                        <a th:href="@{'/products/add/' + ${order.getId()}}" type="button" class="btn btn-primary">Add-->
-<!--                            product</a>-->
-<!--                    </div>-->
+                    <div>
+                        <a th:href="@{'/users/open/' + ${user.getId()}}"
+                           type="button" class="btn btn-primary">Open new Account</a>
+                    </div>
                 </div>
             </div>
         </div>

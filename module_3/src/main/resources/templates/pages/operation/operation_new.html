@@ -25,7 +25,7 @@
                                    placeholder="Enter name" th:field="*{name}">
                         </div>
                         <div class="form-group">
-                            <label for="value">Value (two digits after point)</label>
+                            <label for="value">Value (two digits after point, not 0)</label>
                             <input type="text" class="form-control" id="value" aria-describedby="value"
                                    placeholder="Enter value" th:field="*{value}">
                         </div>
@@ -38,16 +38,6 @@
                                 </option>
                             </select>
                         </div>
-<!--                        <div class="form-group">-->
-<!--                            <label for="password">Password</label>-->
-<!--                            <input type="text" class="form-control" id="password" aria-describedby="password"-->
-<!--                                   placeholder="Enter password" th:field="*{password}">-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="phone">Phone</label>-->
-<!--                            <input type="text" class="form-control" id="phone" aria-describedby="phone"-->
-<!--                                   placeholder="Enter phone" th:field="*{phone}">-->
-<!--                        </div>-->
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>

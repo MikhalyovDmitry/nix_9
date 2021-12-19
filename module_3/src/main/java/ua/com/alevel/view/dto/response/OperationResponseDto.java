@@ -5,6 +5,7 @@ import ua.com.alevel.type.Category;
 import ua.com.alevel.view.dto.ResponseDto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class OperationResponseDto extends ResponseDto {
 
@@ -13,6 +14,7 @@ public class OperationResponseDto extends ResponseDto {
     String name;
     Category category;
     Long accountId;
+    Date created;
 
     public OperationResponseDto () {}
 
@@ -22,6 +24,19 @@ public class OperationResponseDto extends ResponseDto {
         this.name = operation.getName();
         this.category = operation.getCategory();
         this.accountId = operation.getAccountId();
+        this.created = operation.getCreated();
+    }
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public Long getAccountId() {
