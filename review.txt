@@ -30,3 +30,17 @@ hw_6 = 9
 
 hw_7 = 9
 module_2 = 9
+
+hw_8 = 9
+hw_9 = 9
+
+module_3 = 8
+
+очень много спорных решений
+но особо вводит в состояние расстройства то, что даже ввод чисел у тебя в html - text(but not number)
+при клике на csv statement постоянно получаю File already exists.
+
+ну и начиная от ua/com/alevel/view/controller/AccountController.java:124
+и заканчивая ua/com/alevel/view/controller/AccountController.java:156
+просто просто просто зло - я молчу про захардкоженое все на свете, хотя вы знаете как пропертя тянуть
+сам факт - бизнес логика залезла в контроллер, сsv имеют одно и тоже имя для любого ака (((
