@@ -35,6 +35,7 @@
         <module>hw_8_web_jdbc</module>
         <module>hw_9_web_jpa</module>
         <module>module_3</module>
+        <module>hw_10_repository</module>
     </modules>
 
     <packaging>pom</packaging>

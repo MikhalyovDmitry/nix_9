@@ -56,19 +56,19 @@
                             <td th:text="${account.getBalance()}"></td>
                             <td>
                                 <a th:href="@{'/accounts/operate/' + ${account.getId()}}"
-                                   type="button" class="btn btn-primary">Operate</a>
+                                   type="button" class="btn btn-primary btn-sm">Operate</a>
                             </td>
                             <td>
                                 <a th:href="@{'/accounts/transfer/' + ${account.getId()}}"
-                                   type="button" class="btn btn-primary">Transfer</a>
+                                   type="button" class="btn btn-primary btn-sm">Transfer</a>
                             </td>
                             <td>
                                 <a th:href="@{'/accounts/details/' + ${account.getId()}}"
-                                   type="button" class="btn btn-primary">Details</a>
+                                   type="button" class="btn btn-primary btn-sm">Details</a>
                             </td>
                             <td>
                                 <a th:href="@{'/users/close/' + ${user.getId()} + '/' + ${account.getId()}}"
-                                   type="button" class="btn btn-danger">Close</a>
+                                   type="button" class="btn btn-danger btn-sm">Close</a>
                             </td>
                         </tr>
                         </tbody>
