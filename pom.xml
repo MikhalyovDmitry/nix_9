@@ -36,6 +36,7 @@
         <module>hw_9_web_jpa</module>
         <module>module_3</module>
         <module>hw_10_repository</module>
+        <module>nix_computers</module>
     </modules>
 
     <packaging>pom</packaging>

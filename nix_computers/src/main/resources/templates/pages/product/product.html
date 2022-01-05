@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>КСЮША</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+        <link href="/css/product.css" rel="stylesheet">
+	</head>
+<body>
+
+    <div class="super_container">
+        <div class="single_product">
+            <div class="container-fluid" style=" background-color: #fff; padding: 11px;">
+                <div class="row">
+                    <div class="col-lg-4 order-lg-2 order-1">
+                        <div class="image_selected"><img th:src="${product.getImage()}" alt=""></div>
+                    </div>
+                    <div class="col-lg-6 order-3">
+                        <div class="product_description">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Products</a></li>
+                                    <li class="breadcrumb-item active">Details</li>
+                                </ol>
+                            </nav>
+                            <div class="product_name">
+                                <a th:text="${product.getName()}"></a>
+                            </div>
+                            <div> <a class="product_price" th:text="'$' + ${product.getPrice()}"></a>  </div>
+                            <hr class="singleline">
+
+                            <div class="row">
+                                <div class="col-xs-6" style="margin-left: 13px;">
+                                    <div class="product_quantity"> 
+                                        <span>PCS: </span> <input id="quantity_input" type="text" pattern="[0-9]*" value="1">
+                                    </div>
+                                </div>
+                                <div class="buttons"> 
+                                    <button type="button" class="btn btn-primary shop-button">Add to Cart</button> 
+                                    <button type="button" class="btn btn-success shop-button">Buy Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

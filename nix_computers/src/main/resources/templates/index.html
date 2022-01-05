@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>NIX Computers</title>
+    <script type="text/javascript" th:src="@{/js/pagination.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link href="/css/index.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-light bg-primary border-bottom">
+    <a class="navbar-brand ml-2 font-weight-bold" style="color: white;" href="#">
+        <img src="/images/nix-logo.png" width="80" height="40" alt="">
+        COMPUTERS
+    </a>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarColor">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" style="color: white;" th:href="@{/login}">LOGIN</a> </li>
+            <li class="nav-item"><a class="nav-link" style="color: white;" th:href="@{/registration}">REGISTRATION</a> </li>
+
+        </ul>
+    </div>
+    </div>
+</nav>
+
+<section id="data-table">
+
+    <div class="col-12">
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="p-1">Showing [[${pageData.getCurrentShowFromEntries()}]] to [[${pageData.getCurrentShowToEntries()}]] of [[${pageData.getItemsSize()}]] entries</div>
+            <div class="p-1">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span th:text="${pageData.getPageSize()}"></span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <section th:each="size : ${pageData.getPageSizeItems()}">
+                            <a class="dropdown-item" href="#" th:onclick="|runPagination(1, ${size}, 0)|" th:text="${size}">@size</a>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div class="p-1" >
+                <ul class="pagination align-middle">
+                    <li class="page-item" th:classappend="${pageData.isShowFirst() ? '' : 'disabled'}">
+                        <a class="page-link" href="#" th:onclick="|runPagination(1, ${pageData.getPageSize()}, 0)|" title="First Page"><i class="fa fa-fast-backward"></i></a>
+                    </li>
+                    <li class="page-item" th:classappend="${pageData.isShowPrevious() ? '' : 'disabled'}">
+                        <a class="page-link" href="#" th:onclick="|runPagination(${pageData.getCurrentPage()}, ${pageData.getPageSize()}, -1)|" title="Previous Page"><i class="fa fa-backward"></i></a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="" th:text="${pageData.getCurrentPage()}">@Model.currentPage</a>
+                    </li>
+                    <li class="page-item" th:classappend="${pageData.isShowNext() ? '' : 'disabled'}">
+                        <a class="page-link" href="#" th:onclick="|runPagination(${pageData.getCurrentPage()}, ${pageData.getPageSize()}, 1)|" title="Next Page"><i class="fa fa-forward"></i></a>
+                    </li>
+                    <li class="page-item" th:classappend="${pageData.isShowLast() ? '' : 'disabled'}">
+                        <a class="page-link" href="#" th:onclick="|runPagination(${pageData.getTotalPageSize()}, ${pageData.getPageSize()}, 0)|" title="Last Page"><i class="fa fa-fast-forward"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-1">
+                <a class="page-link btn btn-secondary" href="#" th:onclick="|runPagination(${pageData.getCurrentPage()}, ${pageData.getPageSize()}, 0)|" title="Refresh Page"><i class="fa fa-refresh"></i></a>
+            </div>
+            <div class="p-1">
+                <a class="page-link btn btn-secondary" href="#" onclick="runPagination(1, 10, 0)" title="Reset Page"><i class="fa fa-trash"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" th:action="@{${createUrl}}" id="personalSearch">
+        <input type="submit"
+               id="personalSearchSubmit"
+               style="visibility: hidden"
+        />
+    </form>
+
+    <span th:data-sort="${pageData.getSort()}"
+          th:data-order="${pageData.getOrder()}"
+          th:data-page="${pageData.getCurrentPage()}"
+          th:data-size="${pageData.getPageSize()}"
+          id="pageData">
+        </span>
+
+</section>
+
+
+
+
+<section id="sidebar">
+
+
+
+    <!-- <div>
+        <h6 class="p-1 border-bottom">Home Furniture</h6>
+        <ul>
+            <li><a href="#">Living</a></li>
+            <li><a href="#">Dining</a></li>
+            <li><a href="#">Office</a></li>
+            <li><a href="#">Bedroom</a></li>
+            <li><a href="#">Kitchen</a></li>
+        </ul>
+    </div> -->
+    <!-- <div>
+        <h6 class="p-1 border-bottom">Filter By</h6>
+        <p class="mb-2">Color</p>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-action mb-2 rounded"><a href="#"> <span class="fa fa-circle pr-1" id="red"></span>Red </a></li>
+            <li class="list-group-item list-group-item-action mb-2 rounded"><a href="#"> <span class="fa fa-circle pr-1" id="teal"></span>Teal </a></li>
+            <li class="list-group-item list-group-item-action mb-2 rounded"><a href="#"> <span class="fa fa-circle pr-1" id="blue"></span>Blue </a></li>
+        </ul>
+    </div> -->
+    <div>
+        <h6 class="ml-md-2">Brand</h6>
+        <form class="ml-md-2">
+            <div class="form-inline border rounded p-sm-2 my-2"> <input type="checkbox" name="type" id="boring"> <label for="boring" class="pl-1 pt-sm-0 pt-1">Apple</label> </div>
+            <div class="form-inline border rounded p-sm-2 my-2"> <input type="checkbox" name="type" id="ugly"> <label for="ugly" class="pl-1 pt-sm-0 pt-1">Acer</label> </div>
+            <div class="form-inline border rounded p-md-2 p-sm-1"> <input type="checkbox" name="type" id="notugly"> <label for="notugly" class="pl-1 pt-sm-0 pt-1">Lenovo</label> </div>
+            <div class="form-inline border rounded p-sm-2 my-2"> <input type="checkbox" name="type" id="hp"> <label for="hp" class="pl-1 pt-sm-0 pt-1">HP</label> </div>
+        </form>
+    </div>
+</section>
+<section id="products">
+
+
+
+    <div class="container">
+
+        <div class="row">
+
+            <tr th:each="product,iter : ${pageData.getItems()}">
+
+                <div class="column" >
+
+                    <a th:href="@{'/products/details/' + ${product.getId()}}">
+
+                        <div class="card"> <img class="card-img-top" th:src="${product.getImage()}" alt="Card image cap">
+                            <div class="card-body">
+                                <p th:text="${product.getName()}"></p>
+                                <p th:text="'$' + ${product.getPrice()}"></p>
+                            </div>
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+            </tr>
+
+        </div>
+
+    </div>
+</section>
+
+</body>
+</html>
