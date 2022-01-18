@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8">
     <title>NIX Computers</title>
@@ -92,32 +93,7 @@
 
 </section>
 
-
-
-
 <section id="sidebar">
-
-
-
-    <!-- <div>
-        <h6 class="p-1 border-bottom">Home Furniture</h6>
-        <ul>
-            <li><a href="#">Living</a></li>
-            <li><a href="#">Dining</a></li>
-            <li><a href="#">Office</a></li>
-            <li><a href="#">Bedroom</a></li>
-            <li><a href="#">Kitchen</a></li>
-        </ul>
-    </div> -->
-    <!-- <div>
-        <h6 class="p-1 border-bottom">Filter By</h6>
-        <p class="mb-2">Color</p>
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-action mb-2 rounded"><a href="#"> <span class="fa fa-circle pr-1" id="red"></span>Red </a></li>
-            <li class="list-group-item list-group-item-action mb-2 rounded"><a href="#"> <span class="fa fa-circle pr-1" id="teal"></span>Teal </a></li>
-            <li class="list-group-item list-group-item-action mb-2 rounded"><a href="#"> <span class="fa fa-circle pr-1" id="blue"></span>Blue </a></li>
-        </ul>
-    </div> -->
     <div>
         <h6 class="ml-md-2">Brand</h6>
         <form class="ml-md-2">
@@ -128,36 +104,23 @@
         </form>
     </div>
 </section>
+
 <section id="products">
-
-
-
     <div class="container">
-
         <div class="row">
-
             <tr th:each="product,iter : ${pageData.getItems()}">
-
                 <div class="column" >
-
                     <a th:href="@{'/products/details/' + ${product.getId()}}">
-
                         <div class="card"> <img class="card-img-top" th:src="${product.getImage()}" alt="Card image cap">
                             <div class="card-body">
                                 <p th:text="${product.getName()}"></p>
                                 <p th:text="'$' + ${product.getPrice()}"></p>
                             </div>
                         </div>
-
                     </a>
-
-
                 </div>
-
             </tr>
-
         </div>
-
     </div>
 </section>
 

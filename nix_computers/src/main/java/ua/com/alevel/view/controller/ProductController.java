@@ -8,7 +8,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ua.com.alevel.config.security.SecurityService;
+import ua.com.alevel.facade.CartFacade;
+import ua.com.alevel.facade.PersonalFacade;
 import ua.com.alevel.type.Type;
+import ua.com.alevel.util.SecurityUtil;
 import ua.com.alevel.view.dto.response.OrderResponseDto;
 import ua.com.alevel.view.dto.request.ProductRequestDto;
 import ua.com.alevel.view.dto.response.PageData;
@@ -28,10 +33,16 @@ public class ProductController extends AbstractController {
 
     private final ProductFacade productFacade;
     private final OrderFacade orderFacade;
+    private final PersonalFacade personalFacade;
+    private final CartFacade cartFacade;
+    private final SecurityService securityService;
 
-    public ProductController(ProductFacade productFacade, OrderFacade orderFacade) {
+    public ProductController(ProductFacade productFacade, OrderFacade orderFacade, PersonalFacade personalFacade, CartFacade cartFacade, SecurityService securityService) {
         this.productFacade = productFacade;
         this.orderFacade = orderFacade;
+        this.personalFacade = personalFacade;
+        this.cartFacade = cartFacade;
+        this.securityService = securityService;
     }
 
     @GetMapping("/magic")
@@ -67,13 +78,21 @@ public class ProductController extends AbstractController {
             headerDataList.add(data);
         }
 
-        System.out.println(response);
-
         model.addAttribute("headerDataList", headerDataList);
         model.addAttribute("createUrl", "/products/all");
         model.addAttribute("pageData", response);
         model.addAttribute("cardHeader", "All Products");
-        return "index";
+
+        boolean isAuthenticated = securityService.isAuthenticated();
+        Long userId;
+        if (isAuthenticated) {
+            userId = personalFacade.findByName(SecurityUtil.getUsername());
+            model.addAttribute("userId", userId);
+            model.addAttribute("cardCounter", cartFacade.cartCountByUserId(userId, webRequest));
+            return "auth_plp";
+        } else {
+            return "plp";
+        }
     }
 
     @PostMapping("/all")
@@ -165,6 +184,20 @@ public class ProductController extends AbstractController {
         List<OrderResponseDto> orders = productFacade.getOrders(id);
         model.addAttribute("product", productFacade.findById(id));
         model.addAttribute("orders", orders);
+
+        Long userId = null;
+        boolean isAuthenticated = securityService.isAuthenticated();
+        if (isAuthenticated) {
+            userId = personalFacade.findByName(SecurityUtil.getUsername());
+        }
+
+        model.addAttribute("userId", userId);
+
+        Boolean visibility = (Boolean) model.asMap().get("visibility");
+        if (visibility != null && visibility) {
+            return "pages/product/product";
+        }
+        model.addAttribute("visibility", false);
         return "pages/product/product";
     }
 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:visibility="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta charset="utf-8">
-		<title>КСЮША</title>
+		<title>Product page</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/font-awesome.min.css">
@@ -34,14 +34,25 @@
                             <hr class="singleline">
 
                             <div class="row">
-                                <div class="col-xs-6" style="margin-left: 13px;">
-                                    <div class="product_quantity"> 
-                                        <span>PCS: </span> <input id="quantity_input" type="text" pattern="[0-9]*" value="1">
-                                    </div>
-                                </div>
-                                <div class="buttons"> 
-                                    <button type="button" class="btn btn-primary shop-button">Add to Cart</button> 
+<!--                                <div class="col-xs-6" style="margin-left: 13px;">-->
+<!--                                    <div class="product_quantity"> -->
+<!--                                        <span>PCS: </span> <input id="quantity_input" type="text" pattern="[0-9]*" value="1">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="buttons">
+                                    <a type="button" th:href="@{'/cart/' + ${userId} + '/' + ${product.getId()}}" class="btn btn-primary shop-button">
+                                        Add to Cart
+                                    </a>
+
                                     <button type="button" class="btn btn-success shop-button">Buy Now</button>
+
+                                    <hr class="singleline">
+
+                                    <a class="product_name" style="color: red;" th:text="${message}"></a>
+
+                                    <a type="button" th:href="@{'/products/magic'}" th:style="${visibility ? 'display:block' : 'display:none'}" class="btn btn-primary shop-button">
+                                        Continue shopping
+                                    </a>
                                 </div>
                             </div>
                         </div>

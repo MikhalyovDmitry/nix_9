@@ -51,6 +51,11 @@ public class PersonalServiceImpl implements PersonalService {
     }
 
     @Override
+    public Long findByName(String name) {
+        return personalRepository.findByEmail(name).getId();
+    }
+
+    @Override
     public Optional<Personal> findById(Long id) {
         return Optional.empty();
     }

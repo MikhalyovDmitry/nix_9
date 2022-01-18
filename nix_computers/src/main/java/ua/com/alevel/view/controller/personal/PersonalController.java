@@ -9,17 +9,18 @@ import ua.com.alevel.validated.ValidId;
 
 @Validated
 @Controller
-@RequestMapping("/personal/dashboard")
+@RequestMapping("/personal")
 public class PersonalController {
-
-    @GetMapping
-    public String dashboard() {
-        return "pages/personal/dashboard";
-    }
 
     @GetMapping("/{id}")
     public String dashboard(@PathVariable @ValidId(message = "id must be more than zero") Long id) {
         System.out.println("id = " + id);
         return "pages/personal/dashboard";
     }
+
+//    @GetMapping("/cart")
+//    public String productCart() {
+//
+//        return "pages/personal/product_cart";
+//    }
 }

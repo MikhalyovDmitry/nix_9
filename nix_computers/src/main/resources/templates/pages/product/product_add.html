@@ -38,7 +38,7 @@
                             <td th:text="${product.getPrice()}"></td>
                             <td th:text="${product.isInStock()}"></td>
                             <td>
-                                <a th:href="@{'/products/order/' + ${product.getId()} + '/' +${order.getId()}}"
+                                <a th:href="@{'/products/order/' + ${product.getId()} + '/' + ${order.getId()}}"
                                    type="button" class="btn btn-primary">Add</a>
                             </td>
                         </tr>

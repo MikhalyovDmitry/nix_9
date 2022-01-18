@@ -13,7 +13,6 @@ import ua.com.alevel.facade.RegistrationFacade;
 import ua.com.alevel.persistence.type.RoleType;
 import ua.com.alevel.util.SecurityUtil;
 import ua.com.alevel.view.controller.AbstractController;
-import ua.com.alevel.view.controller.ProductController;
 import ua.com.alevel.view.dto.request.register.AuthDto;
 
 @Controller
@@ -22,29 +21,21 @@ public class AuthController extends AbstractController {
     private final RegistrationFacade registrationFacade;
     private final AuthValidatorFacade authValidatorFacade;
     private final SecurityService securityService;
-    private final ProductController productController;
 
     public AuthController(
             RegistrationFacade registrationFacade,
             AuthValidatorFacade authValidatorFacade,
-            SecurityService securityService, ProductController productController) {
+            SecurityService securityService) {
         this.registrationFacade = registrationFacade;
         this.authValidatorFacade = authValidatorFacade;
         this.securityService = securityService;
-        this.productController = productController;
     }
 
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
 
-//        System.out.println("------");
-//        System.out.println("guest autologin");
-//        securityService.autoLogin("guest@mail", "guestguest");
-//        System.out.println("------");
-
         showMessage(model, false);
         boolean authenticated = securityService.isAuthenticated();
-        System.out.println("authenticated = " + authenticated);
         if (authenticated) {
             if (SecurityUtil.hasRole(RoleType.ROLE_ADMIN.name())) {
                 return "redirect:/admin/dashboard";
@@ -59,7 +50,6 @@ public class AuthController extends AbstractController {
         if (logout != null) {
             showInfo(model, "You have been logged out successfully.");
         }
-
         return "login";
     }
 
@@ -90,7 +80,7 @@ public class AuthController extends AbstractController {
             return "redirect:/admin/dashboard";
         }
         if (SecurityUtil.hasRole(RoleType.ROLE_PERSONAL.name())) {
-            return "redirect:/personal/dashboard";
+            return "redirect:/products/magic";
         }
         return "redirect:/login";
     }
