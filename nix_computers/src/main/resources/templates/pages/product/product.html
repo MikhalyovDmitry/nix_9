@@ -8,9 +8,23 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
         <link href="/css/product.css" rel="stylesheet">
 	</head>
 <body>
+
+<script type="text/javascript">
+function blabla() {
+var login = form.login.value;
+document.getElementById('caps').innerHTML = login;
+}
+</script>
 
     <div class="super_container">
         <div class="single_product">
@@ -34,19 +48,92 @@
                             <hr class="singleline">
 
                             <div class="row">
-<!--                                <div class="col-xs-6" style="margin-left: 13px;">-->
-<!--                                    <div class="product_quantity"> -->
-<!--                                        <span>PCS: </span> <input id="quantity_input" type="text" pattern="[0-9]*" value="1">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-                                <div class="buttons">
+
+                                <div class="buttons" style="margin-left: 15px;">
                                     <a type="button" th:href="@{'/cart/' + ${userId} + '/' + ${product.getId()}}" class="btn btn-primary shop-button">
                                         Add to Cart
                                     </a>
 
-                                    <button type="button" class="btn btn-success shop-button">Buy Now</button>
+                                    <button type="button" class="btn btn-primary shop-button" data-toggle="modal" data-target="#exampleModalLive">
+                                        Buy now
+                                    </button>
 
                                     <hr class="singleline">
+
+                                    <div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-body ">
+                                                    <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
+                                                    <div class="px-4 py-5">
+
+                                                        <span class="theme-color">Payment Summary</span>
+                                                        <div class="mb-3">
+                                                            <hr class="new1">
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-between">
+                                                            <span class="font-weight-bold" th:text="${product.getName()}"></span>
+                                                            <span class="text-muted" th:text="'$' + ${product.getPrice()}"></span>
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-between mt-3">
+                                                            <span class="font-weight-bold" >Total</span>
+                                                            <span class="font-weight-bold theme-color" th:text="'$' + ${product.getPrice()}"></span>
+                                                        </div>
+
+
+                                                        <form id="form" name="form">
+                                                            <h4 class="mt-5 theme-color mb-5">Your name:
+                                                                <br>
+                                                                <input name="login" id="login">
+                                                            </h4>
+
+                                                            <h4 class="mt-5 theme-color mb-5">Phone number (10 digits)
+                                                                <br>
+                                                                <input type="tel" name="tel" pattern="[0-9]{10}"></p>
+                                                            </h4>
+
+                                                            <div class="text-center mt-5">
+                                                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#final" onclick="$('#exampleModalLive').modal('hide'); blabla();">Submit</button>
+                                                            </div>
+                                                        </form>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="final" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="final" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-body ">
+                                                    <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
+                                                    <div class="px-4 py-5">
+
+                                                        <h5 class="text-uppercase" id="caps"></h5>
+
+
+
+
+                                                        <h4 class="mt-5 theme-color mb-5">Thanks for your order</h4>
+                                                        <h4 class="mt-5 theme-color mb-5">We'll call you soon</h4>
+
+                                                        <div class="text-center mt-5">
+                                                            <button type="submit" form="form" class="btn btn-primary" onclick="$('#final').modal('hide');">ОK</button>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <a class="product_name" style="color: red;" th:text="${message}"></a>
 
