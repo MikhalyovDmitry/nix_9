@@ -2,23 +2,27 @@ package ua.com.alevel.view.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.com.alevel.config.security.SecurityService;
 import ua.com.alevel.facade.CartFacade;
+import ua.com.alevel.facade.OrderFacade;
 import ua.com.alevel.facade.PersonalFacade;
 import ua.com.alevel.facade.ProductFacade;
+import ua.com.alevel.persistence.datatable.DataTableRequest;
+import ua.com.alevel.persistence.entity.Product;
+import ua.com.alevel.service.ProductService;
 import ua.com.alevel.util.SecurityUtil;
 import ua.com.alevel.view.dto.request.CartRequestDto;
+import ua.com.alevel.view.dto.request.OrderRequestDto;
 import ua.com.alevel.view.dto.response.CartResponseDto;
 import ua.com.alevel.view.dto.response.ProductResponseDto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/cart")
@@ -28,12 +32,19 @@ public class CartController {
     private final ProductFacade productFacade;
     private final PersonalFacade personalFacade;
     private final SecurityService securityService;
+    private final OrderFacade orderFacade;
+    private final ProductService productService;
 
-    public CartController(CartFacade cartFacade, ProductFacade productFacade, PersonalFacade personalFacade, SecurityService securityService) {
+
+    public CartController(CartFacade cartFacade, ProductFacade productFacade, PersonalFacade personalFacade, SecurityService securityService, OrderFacade orderFacade, ProductService productService) {
         this.cartFacade = cartFacade;
         this.productFacade = productFacade;
         this.personalFacade = personalFacade;
         this.securityService = securityService;
+        this.orderFacade = orderFacade;
+
+
+        this.productService = productService;
     }
 
     @GetMapping("/{userId}/{productId}")
@@ -64,12 +75,13 @@ public class CartController {
             products.add(productFacade.findById(dto.getProductId()));
             totalPrice = totalPrice.add(productFacade.findById(dto.getProductId()).getPrice());
             count++;
-
         }
+
         model.addAttribute("userId", userId);
         model.addAttribute("products", products);
         model.addAttribute("totalPrice", totalPrice.setScale(2));
         model.addAttribute("count", count);
+        model.addAttribute("order", new OrderRequestDto());
         String firstName = personalFacade.findById(personalFacade.findByName(SecurityUtil.getUsername())).getFirstName();
         String lastname = personalFacade.findById(personalFacade.findByName(SecurityUtil.getUsername())).getLastName();
         if (firstName == null && lastname == null) {
@@ -79,6 +91,28 @@ public class CartController {
         }
         return "/cart";
     }
+
+    @PostMapping("/{userId}")
+    public String cart(@ModelAttribute("order") OrderRequestDto dto, @PathVariable Long userId, WebRequest webRequest) {
+        String email = personalFacade.findById(userId).getEmail();
+        List<CartResponseDto> cart = cartFacade.cartByUserId(userId, webRequest);
+        List<ProductResponseDto> productsDto = cart.
+                stream().map(cartResponseDto ->
+                        productFacade.findById(cartResponseDto.getProductId())).collect(Collectors.toList());
+
+        List<Product> products = productsDto.
+                stream().
+                map(product -> productService.findById(product.getId()).get()).collect(Collectors.toList());
+
+        dto.setProducts(products);
+        dto.setEmail(email);
+        orderFacade.create(dto);
+        Long orderId = orderFacade.lastCreated();
+        personalFacade.addOrderToUser(userId, orderId);
+        cartFacade.deleteCartByUsersId(userId);
+        return "redirect:/products/magic";
+    }
+
 
     @GetMapping("/remove/{userId}/{productId}")
     public String removeFromCart(@PathVariable Long userId, @PathVariable Long productId) {

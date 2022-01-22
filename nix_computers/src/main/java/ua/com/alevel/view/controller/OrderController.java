@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import ua.com.alevel.facade.PersonalFacade;
+import ua.com.alevel.persistence.entity.Order;
 import ua.com.alevel.type.Type;
 import ua.com.alevel.view.dto.request.OrderRequestDto;
 import ua.com.alevel.view.dto.response.OrderResponseDto;
@@ -31,10 +33,12 @@ OrderController extends AbstractController {
 
     private final OrderFacade orderFacade;
     private final ProductFacade productFacade;
+    private final PersonalFacade personalFacade;
 
-    public OrderController(OrderFacade orderFacade, ProductFacade productFacade) {
+    public OrderController(OrderFacade orderFacade, ProductFacade productFacade, PersonalFacade personalFacade) {
         this.orderFacade = orderFacade;
         this.productFacade = productFacade;
+        this.personalFacade = personalFacade;
     }
 
     @GetMapping
@@ -154,6 +158,13 @@ OrderController extends AbstractController {
         model.addAttribute("product", productFacade.findById(productId));
         model.addAttribute("orders", orders);
         return "pages/product/product_details";
+    }
+
+    @GetMapping("/{userId}")
+    public String userOrdersPage(@PathVariable Long userId, Model model, WebRequest request) {
+        List<Order> orders = orderFacade.findOrdersByUserId(userId);
+        model.addAttribute("orders", orders);
+        return "order";
     }
 
 }

@@ -11,6 +11,9 @@ public class Order extends BaseEntity {
 
     private String customer;
     private boolean delivered;
+    private String email;
+    private String phone;
+    private String name;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
@@ -18,11 +21,11 @@ public class Order extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "order_product",
-            joinColumns = @JoinColumn(name = "orders"),
-            inverseJoinColumns = @JoinColumn(name = "products"))
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
     public Order() {
@@ -31,6 +34,40 @@ public class Order extends BaseEntity {
         this.updated = new Date();
         products = new ArrayList<>();
     }
+
+    public double getOrderTotalPrice() {
+        double totalPrice = 0;
+        for (Product product: this.products) {
+            totalPrice = totalPrice + product.getPrice();
+        }
+        return totalPrice;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public String getCustomer() {
         return customer;

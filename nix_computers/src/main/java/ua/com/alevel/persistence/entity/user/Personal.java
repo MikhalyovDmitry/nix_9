@@ -1,9 +1,12 @@
 package ua.com.alevel.persistence.entity.user;
 
+import ua.com.alevel.persistence.entity.Order;
+import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.persistence.type.RoleType;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("PERSONAL")
@@ -25,9 +28,24 @@ public class Personal extends User {
     @Transient
     private Integer age;
 
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "user_order",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private List<Order> orders;
+
     public Personal() {
         super();
         setRoleType(RoleType.ROLE_PERSONAL);
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public Date getBirthDay() {

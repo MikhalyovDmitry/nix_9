@@ -5,6 +5,7 @@ import org.springframework.web.context.request.WebRequest;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.Product;
+import ua.com.alevel.service.PersonalService;
 import ua.com.alevel.service.ProductService;
 import ua.com.alevel.util.WebRequestUtil;
 import ua.com.alevel.view.dto.request.OrderRequestDto;
@@ -17,6 +18,7 @@ import ua.com.alevel.service.OrderService;
 import ua.com.alevel.view.dto.response.PageData;
 import ua.com.alevel.view.dto.response.ProductResponseDto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,10 +28,17 @@ public class OrderFacadeImpl implements OrderFacade {
 
     private final OrderService orderService;
     private final ProductService productService;
+    private final PersonalService personalService;
 
-    public OrderFacadeImpl(OrderService orderService, ProductService productService) {
+    public OrderFacadeImpl(OrderService orderService, ProductService productService, PersonalService personalService) {
         this.orderService = orderService;
         this.productService = productService;
+        this.personalService = personalService;
+    }
+
+    @Override
+    public List<Order> findOrdersByUserId(Long userId) {
+        return personalService.findById(userId).get().getOrders();
     }
 
     @Override
@@ -64,6 +73,10 @@ public class OrderFacadeImpl implements OrderFacade {
         Order order = new Order();
         order.setCustomer(orderRequestDto.getCustomer());
         order.setDelivered(orderRequestDto.isDelivered());
+        order.setEmail(orderRequestDto.getEmail());
+        order.setPhone(orderRequestDto.getPhone());
+        order.setName(orderRequestDto.getName());
+        order.setProducts(orderRequestDto.getProducts());
         orderService.create(order);
     }
 
@@ -72,6 +85,10 @@ public class OrderFacadeImpl implements OrderFacade {
         Order order = orderService.findById(id).get();
         order.setCustomer(orderRequestDto.getCustomer());
         order.setDelivered(orderRequestDto.isDelivered());
+        order.setEmail(orderRequestDto.getEmail());
+        order.setPhone(orderRequestDto.getPhone());
+        order.setName(orderRequestDto.getName());
+        order.setProducts(orderRequestDto.getProducts());
         orderService.update(order);
     }
 
@@ -113,5 +130,22 @@ public class OrderFacadeImpl implements OrderFacade {
         pageData.initPaginationState(pageData.getCurrentPage());
 
         return pageData;
+    }
+
+    @Override
+    public Long lastCreated() {
+        DataTableRequest request = new DataTableRequest().findAllRequest();
+        return orderService.findAll(request).getItemsSize();
+    }
+
+    @Override
+    public BigDecimal revenue() {
+        DataTableRequest request = new DataTableRequest().findAllRequest();
+        List<Order> orders = orderService.findAll(request).getItems();
+        BigDecimal revenue = new BigDecimal(0);
+        for (Order order: orders) {
+            revenue = revenue.add(BigDecimal.valueOf(order.getOrderTotalPrice()));
+        }
+        return revenue.setScale(2);
     }
 }

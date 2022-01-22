@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface CartFacade extends BaseFacade<CartRequestDto, CartResponseDto> {
 
+    void deleteCartByUsersId(Long userId);
+
     int cartCountByUserId(Long userId, WebRequest webRequest);
 
     List<CartResponseDto> cartByUserId(Long userId, WebRequest request);

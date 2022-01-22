@@ -6,5 +6,7 @@ import ua.com.alevel.view.dto.response.PersonalResponseDto;
 public interface PersonalFacade extends BaseFacade<PersonalRequestDto, PersonalResponseDto> {
 
 
+    void addOrderToUser(Long userId, Long orderId);
+
     Long findByName(String name);
 }

@@ -17,13 +17,49 @@
 
         <link href="/css/product.css" rel="stylesheet">
 	</head>
-<body>
+
+    <script type="text/javascript" th:if="${ok}">
+    function finalModal() {
+    document.getElementById('finalModal').click();
+    };
+    </script>
+
+<body onload="finalModal()">
 
 <script type="text/javascript">
-function blabla() {
-var login = form.login.value;
-document.getElementById('caps').innerHTML = login;
-}
+  function setCursorPosition(pos, e) {
+    e.focus();
+    if (e.setSelectionRange) e.setSelectionRange(pos, pos);
+    else if (e.createTextRange) {
+      var range = e.createTextRange();
+      range.collapse(true);
+      range.moveEnd("character", pos);
+      range.moveStart("character", pos);
+      range.select()
+    }
+  }
+
+  function mask(e) {
+    //console.log('mask',e);
+    var matrix = this.placeholder,// .defaultValue
+        i = 0,
+        def = matrix.replace(/\D/g, ""),
+        val = this.value.replace(/\D/g, "");
+    def.length >= val.length && (val = def);
+    matrix = matrix.replace(/[_\d]/g, function(a) {
+      return val.charAt(i++) || "_"
+    });
+    this.value = matrix;
+    i = matrix.lastIndexOf(val.substr(-1));
+    i < matrix.length && matrix != this.placeholder ? i++ : i = matrix.indexOf("_");
+    setCursorPosition(i, this)
+  }
+  window.addEventListener("DOMContentLoaded", function() {
+    var input = document.querySelector("#online_phone");
+    input.addEventListener("input", mask, false);
+    input.focus();
+    setCursorPosition(3, input);
+  });
 </script>
 
     <div class="super_container">
@@ -50,30 +86,34 @@ document.getElementById('caps').innerHTML = login;
                             <div class="row">
 
                                 <div class="buttons" style="margin-left: 15px;">
-                                    <a type="button" th:href="@{'/cart/' + ${userId} + '/' + ${product.getId()}}" class="btn btn-primary shop-button">
+                                    <a type="button"
+                                       th:href="@{'/cart/' + ${userId} + '/' + ${product.getId()}}"
+                                       class="btn btn-primary shop-button"
+                                       th:style="${buttonsVisibility ? 'visibility: visible' : 'visibility: hidden'}">
                                         Add to Cart
                                     </a>
 
-                                    <button type="button" class="btn btn-primary shop-button" data-toggle="modal" data-target="#exampleModalLive">
+                                    <a type="button" style="text-color: white;"
+                                            class="btn btn-primary shop-button"
+                                            data-toggle="modal" data-target="#buyButtonModal"
+                                            th:style="${buttonsVisibility ? 'visibility: visible' : 'visibility: hidden'}"
+                                            href="#">
                                         Buy now
-                                    </button>
+                                    </a>
 
                                     <hr class="singleline">
 
-                                    <div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                    <div id="buyButtonModal" class="modal fade"
+                                         tabindex="-1" role="dialog" aria-labelledby="buyButtonModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-body ">
-
-
-
                                                     <div class="px-4 py-5">
 
                                                         <span class="theme-color">Payment Summary</span>
                                                         <div class="mb-3">
                                                             <hr class="new1">
                                                         </div>
-
                                                         <div class="d-flex justify-content-between">
                                                             <span class="font-weight-bold" th:text="${product.getName()}"></span>
                                                             <span class="text-muted" th:text="'$' + ${product.getPrice()}"></span>
@@ -84,24 +124,26 @@ document.getElementById('caps').innerHTML = login;
                                                             <span class="font-weight-bold theme-color" th:text="'$' + ${product.getPrice()}"></span>
                                                         </div>
 
-
-                                                        <form id="form" name="form">
+                                                        <form id="form" name="form" th:action="@{'/products/details/' + ${id}}" th:object="${order}" method="post">
                                                             <h4 class="mt-5 theme-color mb-5">Your name:
                                                                 <br>
-                                                                <input name="login" id="login">
+                                                                <input name="login" id="login" type="text" th:field="*{name}">
                                                             </h4>
 
-                                                            <h4 class="mt-5 theme-color mb-5">Phone number (10 digits)
+                                                            <h4 class="mt-5 theme-color mb-5">Phone number:
                                                                 <br>
-                                                                <input type="tel" name="tel" pattern="[0-9]{10}"></p>
+                                                                <input id="online_phone" name="phone" type="tel" maxlength="50"
+                                                                       autofocus="autofocus" required="required"
+                                                                       value="+8(___)___-__-__"
+                                                                       pattern="\+8\s?[\(]{0,1}\d{3}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+                                                                       placeholder="+8(___)___-__-__" th:field="*{phone}">
                                                             </h4>
 
                                                             <div class="text-center mt-5">
-                                                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#final" onclick="$('#exampleModalLive').modal('hide'); blabla();">Submit</button>
+                                                                <button class="btn btn-primary" type="submit"
+                                                                        onclick="getUserName()">Submit</button>
                                                             </div>
                                                         </form>
-
-
 
                                                     </div>
                                                 </div>
@@ -116,11 +158,13 @@ document.getElementById('caps').innerHTML = login;
                                                 <div class="modal-body ">
                                                     <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
                                                     <div class="px-4 py-5">
-                                                        <h5 class="text-uppercase" id="caps"></h5>
+
+                                                        <h5 class="text-uppercase" th:text="${name}"></h5>
                                                         <h4 class="mt-5 theme-color mb-5">Thanks for your order</h4>
                                                         <h4 class="mt-5 theme-color mb-5">We'll call you soon</h4>
                                                         <div class="text-center mt-5">
-                                                            <button type="submit" form="form" class="btn btn-primary" onclick="$('#final').modal('hide');">ОK</button>
+                                                            <button type="button"
+                                                                    class="btn btn-primary" onclick="$('#final').modal('hide');">ОK</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -131,9 +175,22 @@ document.getElementById('caps').innerHTML = login;
 
                                     <a class="product_name" style="color: red;" th:text="${message}"></a>
 
-                                    <a type="button" th:href="@{'/products/magic'}" th:style="${visibility ? 'display:block' : 'display:none'}" class="btn btn-primary shop-button">
+                                    <a type="button"
+                                       th:href="@{'/products/magic'}"
+                                       th:style="${visibility ? 'display:block' : 'display:none'}"
+                                       class="btn btn-primary shop-button">
                                         Continue shopping
                                     </a>
+
+
+
+                                    <a type="button" style="visibility: hidden;" id="finalModal" href="#"
+                                       data-target="#final" data-toggle="modal"
+                                       class="btn btn-primary shop-button">
+                                        Continue shopping
+                                    </a>
+
+
                                 </div>
                             </div>
                         </div>

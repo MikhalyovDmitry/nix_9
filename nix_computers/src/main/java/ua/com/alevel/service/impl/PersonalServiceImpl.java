@@ -42,7 +42,7 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public void update(Personal entity) {
-
+        crudRepositoryHelper.update(personalRepository, entity);
     }
 
     @Override
@@ -52,7 +52,11 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public Long findByName(String name) {
-        return personalRepository.findByEmail(name).getId();
+        if (personalRepository.findByEmail(name) != null) {
+            return personalRepository.findByEmail(name).getId();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -62,6 +66,6 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public DataTableResponse<Personal> findAll(DataTableRequest request) {
-        return null;
+        return crudRepositoryHelper.findAll(personalRepository, request);
     }
 }

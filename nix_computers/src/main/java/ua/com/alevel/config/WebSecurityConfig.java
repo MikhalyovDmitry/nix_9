@@ -34,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/registration", "/login",  "/products/**", "/plp", "/").permitAll()
                 .antMatchers("/personal/**", "/auth_plp", "/cart/**", "/login").access("hasRole('ROLE_PERSONAL')")
-                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/admin/**", "/admin_plp", "/admin_dashboard_main").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").defaultSuccessUrl("/products/magic").permitAll()
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("/products/magic");

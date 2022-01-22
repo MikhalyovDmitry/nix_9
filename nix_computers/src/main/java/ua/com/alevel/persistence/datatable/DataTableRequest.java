@@ -11,6 +11,15 @@ public class DataTableRequest {
     private String sort;
     private Map<String, String[]> requestParamMap;
 
+    public DataTableRequest findAllRequest() {
+        DataTableRequest dataTableRequest = new DataTableRequest();
+        dataTableRequest.page = 1;
+        dataTableRequest.size = Integer.MAX_VALUE;
+        dataTableRequest.order = "asc";
+        dataTableRequest.sort = "id";
+        return dataTableRequest;
+    }
+
     public DataTableRequest() {
         this.requestParamMap = new HashMap<>();
     }

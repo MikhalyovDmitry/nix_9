@@ -2,6 +2,7 @@ package ua.com.alevel.view.controller;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -10,16 +11,16 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.com.alevel.config.security.SecurityService;
-import ua.com.alevel.facade.CartFacade;
-import ua.com.alevel.facade.PersonalFacade;
+import ua.com.alevel.facade.*;
+import ua.com.alevel.persistence.datatable.DataTableRequest;
+import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.type.Type;
 import ua.com.alevel.util.SecurityUtil;
+import ua.com.alevel.view.dto.request.OrderRequestDto;
 import ua.com.alevel.view.dto.response.OrderResponseDto;
 import ua.com.alevel.view.dto.request.ProductRequestDto;
 import ua.com.alevel.view.dto.response.PageData;
 import ua.com.alevel.view.dto.response.ProductResponseDto;
-import ua.com.alevel.facade.OrderFacade;
-import ua.com.alevel.facade.ProductFacade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +35,15 @@ public class ProductController extends AbstractController {
     private final ProductFacade productFacade;
     private final OrderFacade orderFacade;
     private final PersonalFacade personalFacade;
+    private final AdminFacade adminFacade;
     private final CartFacade cartFacade;
     private final SecurityService securityService;
 
-    public ProductController(ProductFacade productFacade, OrderFacade orderFacade, PersonalFacade personalFacade, CartFacade cartFacade, SecurityService securityService) {
+    public ProductController(ProductFacade productFacade, OrderFacade orderFacade, PersonalFacade personalFacade, AdminFacade adminFacade, CartFacade cartFacade, SecurityService securityService) {
         this.productFacade = productFacade;
         this.orderFacade = orderFacade;
         this.personalFacade = personalFacade;
+        this.adminFacade = adminFacade;
         this.cartFacade = cartFacade;
         this.securityService = securityService;
     }
@@ -85,6 +88,13 @@ public class ProductController extends AbstractController {
 
         boolean isAuthenticated = securityService.isAuthenticated();
         Long userId;
+        if (isAuthenticated) {
+            if (adminFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = adminFacade.findByName(SecurityUtil.getUsername());
+                model.addAttribute("userId", userId);
+                return "admin_plp";
+            }
+        }
         if (isAuthenticated) {
             userId = personalFacade.findByName(SecurityUtil.getUsername());
             model.addAttribute("userId", userId);
@@ -184,11 +194,17 @@ public class ProductController extends AbstractController {
         List<OrderResponseDto> orders = productFacade.getOrders(id);
         model.addAttribute("product", productFacade.findById(id));
         model.addAttribute("orders", orders);
+        model.addAttribute("order", new OrderRequestDto());
 
         Long userId = null;
         boolean isAuthenticated = securityService.isAuthenticated();
         if (isAuthenticated) {
-            userId = personalFacade.findByName(SecurityUtil.getUsername());
+            if (adminFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = adminFacade.findByName(SecurityUtil.getUsername());
+            }
+            if (personalFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = personalFacade.findByName(SecurityUtil.getUsername());
+            }
         }
 
         model.addAttribute("userId", userId);
@@ -197,8 +213,42 @@ public class ProductController extends AbstractController {
         if (visibility != null && visibility) {
             return "pages/product/product";
         }
+
+        boolean buttonsVisibility = true;
+        if (isAuthenticated) {
+            if (adminFacade.findByName(SecurityUtil.getUsername()) != null) {
+                buttonsVisibility = false;
+            }
+        }
+
         model.addAttribute("visibility", false);
+        model.addAttribute("buttonsVisibility", buttonsVisibility);
+        model.addAttribute("id", id);
         return "pages/product/product";
+    }
+
+    @PostMapping("/details/{id}")
+    public String orderFromUnregisteredUserInit(@ModelAttribute("order") OrderRequestDto dto, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+        dto.setEmail("Unregistered user");
+        List<Product> products = new ArrayList<>();
+        products.add(productFacade.findProductById(id));
+        dto.setProducts(products);
+        orderFacade.create(dto);
+        Long orderId = orderFacade.lastCreated();
+        OrderResponseDto order = orderFacade.findById(orderId);
+        redirectAttributes.addFlashAttribute("order", order);
+        return "redirect:/products/details/order/" + id;
+    }
+
+    @GetMapping("/details/order/{id}")
+    public String orderFromUnregisteredUser(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model) {
+        boolean ok = true;
+        redirectAttributes.addFlashAttribute("ok", ok);
+
+        OrderResponseDto order = (OrderResponseDto) model.asMap().get("order");
+        System.out.println(order.toString());
+        redirectAttributes.addFlashAttribute("name", order.getName());
+        return "redirect:/products/details/" + id;
     }
 
     @GetMapping("/delete/{id}")

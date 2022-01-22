@@ -7,7 +7,6 @@ import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.BaseEntity;
 import ua.com.alevel.persistence.entity.Cart;
-import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.service.CartService;
 import ua.com.alevel.util.WebRequestUtil;
 import ua.com.alevel.view.dto.request.CartRequestDto;
@@ -15,9 +14,8 @@ import ua.com.alevel.view.dto.request.PageAndSizeData;
 import ua.com.alevel.view.dto.request.SortData;
 import ua.com.alevel.view.dto.response.CartResponseDto;
 import ua.com.alevel.view.dto.response.PageData;
-import ua.com.alevel.view.dto.response.ProductResponseDto;
 
-import java.util.ArrayList;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -29,6 +27,22 @@ public class CartFacadeImpl implements CartFacade {
 
     public CartFacadeImpl(CartService cartService) {
         this.cartService = cartService;
+    }
+
+    @Override
+    public void deleteCartByUsersId(Long userId) {
+        DataTableRequest dataTableRequest = new DataTableRequest();
+        dataTableRequest.setSize(Integer.MAX_VALUE);
+        dataTableRequest.setPage(1);
+        dataTableRequest.setSort("id");
+        dataTableRequest.setOrder("asc");
+        List<Cart> carts = cartService.findAll(dataTableRequest).getItems();
+
+       for (Cart cart: carts) {
+            if (cart.getUserId().equals(userId)) {
+                cartService.delete(cart.getId());
+            }
+        }
     }
 
     @Override

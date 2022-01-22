@@ -33,6 +33,11 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
+    public Product findProductById(Long productId) {
+        return productService.findById(productId).get();
+    }
+
+    @Override
     public List<OrderResponseDto> getOrders(Long id) {
         List<Order> orders = productService.getOrders(id);
         List<OrderResponseDto> list = new ArrayList<>();
