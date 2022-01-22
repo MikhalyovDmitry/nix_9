@@ -11,4 +11,6 @@ public interface CartFacade extends BaseFacade<CartRequestDto, CartResponseDto> 
     int cartCountByUserId(Long userId, WebRequest webRequest);
 
     List<CartResponseDto> cartByUserId(Long userId, WebRequest request);
+
+    List<Long> findCartIdByUserIdAndProductId(Long userId, Long productId);
 }

@@ -32,7 +32,6 @@ public class CartController {
     public CartController(CartFacade cartFacade, ProductFacade productFacade, PersonalFacade personalFacade, SecurityService securityService) {
         this.cartFacade = cartFacade;
         this.productFacade = productFacade;
-
         this.personalFacade = personalFacade;
         this.securityService = securityService;
     }
@@ -67,10 +66,27 @@ public class CartController {
             count++;
 
         }
+        model.addAttribute("userId", userId);
         model.addAttribute("products", products);
         model.addAttribute("totalPrice", totalPrice.setScale(2));
         model.addAttribute("count", count);
-
+        String firstName = personalFacade.findById(personalFacade.findByName(SecurityUtil.getUsername())).getFirstName();
+        String lastname = personalFacade.findById(personalFacade.findByName(SecurityUtil.getUsername())).getLastName();
+        if (firstName == null && lastname == null) {
+            model.addAttribute("userName", SecurityUtil.getUsername());
+        } else {
+            model.addAttribute("userName", firstName + lastname);
+        }
         return "/cart";
+    }
+
+    @GetMapping("/remove/{userId}/{productId}")
+    public String removeFromCart(@PathVariable Long userId, @PathVariable Long productId) {
+        List<Long> cartIds = cartFacade.findCartIdByUserIdAndProductId(userId, productId);
+        if (cartIds.get(0) != null) {
+            cartFacade.delete(cartIds.get(0));
+        }
+
+        return "redirect:/cart/" + userId;
     }
 }

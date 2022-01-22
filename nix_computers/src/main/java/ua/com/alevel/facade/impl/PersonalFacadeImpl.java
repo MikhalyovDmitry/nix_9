@@ -7,6 +7,7 @@ import ua.com.alevel.service.PersonalService;
 import ua.com.alevel.view.dto.request.PersonalRequestDto;
 import ua.com.alevel.view.dto.response.PageData;
 import ua.com.alevel.view.dto.response.PersonalResponseDto;
+import ua.com.alevel.view.dto.response.ProductResponseDto;
 
 @Service
 public class PersonalFacadeImpl implements PersonalFacade {
@@ -39,7 +40,8 @@ public class PersonalFacadeImpl implements PersonalFacade {
 
     @Override
     public PersonalResponseDto findById(Long id) {
-        return null;
+
+        return new PersonalResponseDto(personalService.findById(id).get());
     }
 
     @Override

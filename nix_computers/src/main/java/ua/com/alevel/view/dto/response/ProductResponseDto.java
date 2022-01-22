@@ -23,7 +23,6 @@ public class ProductResponseDto extends ResponseDto {
             this.inStock = product.isInStock();
             this.image = product.getImage();
         }
-
     }
 
     public String getName() {

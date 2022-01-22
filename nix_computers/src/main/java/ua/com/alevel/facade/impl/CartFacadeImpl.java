@@ -5,6 +5,7 @@ import org.springframework.web.context.request.WebRequest;
 import ua.com.alevel.facade.CartFacade;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
+import ua.com.alevel.persistence.entity.BaseEntity;
 import ua.com.alevel.persistence.entity.Cart;
 import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.service.CartService;
@@ -16,6 +17,7 @@ import ua.com.alevel.view.dto.response.CartResponseDto;
 import ua.com.alevel.view.dto.response.PageData;
 import ua.com.alevel.view.dto.response.ProductResponseDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -99,5 +101,12 @@ public class CartFacadeImpl implements CartFacade {
                 .getItems().stream()
                 .filter(dto -> Objects.equals(dto.getUserId(), userId))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Long> findCartIdByUserIdAndProductId(Long userId, Long productId) {
+        List<Cart> carts = cartService.findCartIdByUserIdAndProductId(userId, productId);
+        List<Long> cartIds = carts.stream().map(BaseEntity::getId).collect(Collectors.toList());
+        return cartIds;
     }
 }

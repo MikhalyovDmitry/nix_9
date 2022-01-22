@@ -56,4 +56,11 @@ public class CartServiceImpl implements CartService {
         return cartRepositoryHelper.findAll(cartRepository, dataTableRequest);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Cart> findCartIdByUserIdAndProductId(Long userId, Long productId) {
+        return cartRepository.findCartIdByUserIdAndProductId(userId, productId);
+    }
+
+
 }
