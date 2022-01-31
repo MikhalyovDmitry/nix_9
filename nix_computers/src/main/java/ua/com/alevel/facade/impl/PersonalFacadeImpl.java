@@ -6,6 +6,7 @@ import ua.com.alevel.facade.PersonalFacade;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.Order;
+import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.persistence.entity.user.Personal;
 import ua.com.alevel.service.OrderService;
 import ua.com.alevel.service.PersonalService;
@@ -31,6 +32,11 @@ public class PersonalFacadeImpl implements PersonalFacade {
     }
 
     @Override
+    public Personal findUserById(Long userId) {
+        return personalService.findById(userId).get();
+    }
+
+    @Override
     public void addOrderToUser(Long userId, Long orderId) {
         Personal personal = new Personal();
         personal = personalService.findById(userId).get();
@@ -53,7 +59,12 @@ public class PersonalFacadeImpl implements PersonalFacade {
 
     @Override
     public void update(PersonalRequestDto personalRequestDto, Long id) {
-
+        Personal personal = personalService.findById(id).get();
+        personal.setFirstName(personalRequestDto.getFirstName());
+        personal.setLastName(personalRequestDto.getLastName());
+        personal.setAddress(personalRequestDto.getAddress());
+        personal.setPhone(personalRequestDto.getPhone());
+        personalService.update(personal);
     }
 
     @Override

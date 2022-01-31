@@ -6,11 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.com.alevel.config.security.SecurityService;
-import ua.com.alevel.facade.CartFacade;
-import ua.com.alevel.facade.OrderFacade;
-import ua.com.alevel.facade.PersonalFacade;
-import ua.com.alevel.facade.ProductFacade;
-import ua.com.alevel.persistence.datatable.DataTableRequest;
+import ua.com.alevel.facade.*;
 import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.service.ProductService;
 import ua.com.alevel.util.SecurityUtil;
@@ -34,17 +30,17 @@ public class CartController {
     private final SecurityService securityService;
     private final OrderFacade orderFacade;
     private final ProductService productService;
+    private final AdminFacade adminFacade;
 
 
-    public CartController(CartFacade cartFacade, ProductFacade productFacade, PersonalFacade personalFacade, SecurityService securityService, OrderFacade orderFacade, ProductService productService) {
+    public CartController(CartFacade cartFacade, ProductFacade productFacade, PersonalFacade personalFacade, SecurityService securityService, OrderFacade orderFacade, ProductService productService, AdminFacade adminFacade) {
         this.cartFacade = cartFacade;
         this.productFacade = productFacade;
         this.personalFacade = personalFacade;
         this.securityService = securityService;
         this.orderFacade = orderFacade;
-
-
         this.productService = productService;
+        this.adminFacade = adminFacade;
     }
 
     @GetMapping("/{userId}/{productId}")
@@ -60,6 +56,13 @@ public class CartController {
         cartRequestDto.setUserId(userId);
         cartFacade.create(cartRequestDto);
 
+        boolean buttonsVisibility = true;
+        if (isAuthenticated) {
+            if (adminFacade.findByName(SecurityUtil.getUsername()) != null) {
+                buttonsVisibility = false;
+            }
+        }
+        redirectAttributes.addFlashAttribute("buttonsVisibility", buttonsVisibility);
         redirectAttributes.addFlashAttribute("message", "Product added to cart");
         redirectAttributes.addFlashAttribute("visibility", true);
         return "redirect:/products/details/" + productId;

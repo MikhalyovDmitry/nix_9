@@ -26,13 +26,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
+                <div class="cart_title" th:text="'You have '+ ${orders.size()} + ' orders'"></div>
                 <div class="cart_container" th:each="order,iter : ${orders}">
                     <div class="cart_title">Order
                         <small th:text="' #' + ${iter.count} + ' ( ' + ${order.getProducts().size()} + ' items in this order )'">  </small></div>
 
                     <div class="cart_items" th:each="product,iter : ${order.getProducts()}">
 
-                        <a type="button" class="close" aria-label="Close" style="padding-right: 5px; padding-top: 5px;" th:href="@{'/cart/remove/' + ${userId} + '/' + ${product.getId()}}">
+                        <a type="button" class="close" aria-label="Close" style="padding-right: 5px; padding-top: 5px;" th:href="@{'/orders/remove/' + ${order.getId()} + '/' + ${product.getId()}}">
                             <span aria-hidden="true">&times;</span>
                         </a>
 

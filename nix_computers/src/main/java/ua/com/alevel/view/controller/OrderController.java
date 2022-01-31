@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import ua.com.alevel.config.security.SecurityService;
+import ua.com.alevel.facade.AdminFacade;
 import ua.com.alevel.facade.PersonalFacade;
 import ua.com.alevel.persistence.entity.Order;
 import ua.com.alevel.type.Type;
+import ua.com.alevel.util.SecurityUtil;
 import ua.com.alevel.view.dto.request.OrderRequestDto;
 import ua.com.alevel.view.dto.response.OrderResponseDto;
 import ua.com.alevel.view.dto.response.PageData;
@@ -34,11 +37,15 @@ OrderController extends AbstractController {
     private final OrderFacade orderFacade;
     private final ProductFacade productFacade;
     private final PersonalFacade personalFacade;
+    private final AdminFacade adminFacade;
+    private final SecurityService securityService;
 
-    public OrderController(OrderFacade orderFacade, ProductFacade productFacade, PersonalFacade personalFacade) {
+    public OrderController(OrderFacade orderFacade, ProductFacade productFacade, PersonalFacade personalFacade, AdminFacade adminFacade, SecurityService securityService) {
         this.orderFacade = orderFacade;
         this.productFacade = productFacade;
         this.personalFacade = personalFacade;
+        this.adminFacade = adminFacade;
+        this.securityService = securityService;
     }
 
     @GetMapping
@@ -151,20 +158,27 @@ OrderController extends AbstractController {
         return "pages/product/product_details";
     }
 
-    @GetMapping("/delete/order/{productId}/{orderId}")
-    public String deleteProductFromOrder(@PathVariable Long productId, @PathVariable Long orderId, Model model) {
-        orderFacade.removeProduct(orderId, productId);
-        List<OrderResponseDto> orders = productFacade.getOrders(productId);
-        model.addAttribute("product", productFacade.findById(productId));
-        model.addAttribute("orders", orders);
-        return "pages/product/product_details";
-    }
-
     @GetMapping("/{userId}")
     public String userOrdersPage(@PathVariable Long userId, Model model, WebRequest request) {
         List<Order> orders = orderFacade.findOrdersByUserId(userId);
         model.addAttribute("orders", orders);
         return "order";
+    }
+
+    @GetMapping("/remove/{orderId}/{productId}")
+    public String deleteProductFromOrder(@PathVariable Long productId, @PathVariable Long orderId, Model model) {
+        orderFacade.removeProduct(orderId, productId);
+        Long userId = null;
+        boolean isAuthenticated = securityService.isAuthenticated();
+        if (isAuthenticated) {
+            if (adminFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = adminFacade.findByName(SecurityUtil.getUsername());
+            }
+            if (personalFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = personalFacade.findByName(SecurityUtil.getUsername());
+            }
+        }
+        return "redirect:/orders/" + userId;
     }
 
 }

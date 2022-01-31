@@ -1,26 +1,60 @@
 package ua.com.alevel.view.controller.personal;
 
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.com.alevel.validated.ValidId;
+import ua.com.alevel.config.security.SecurityService;
+import ua.com.alevel.facade.PersonalFacade;
+import ua.com.alevel.persistence.entity.user.Personal;
+import ua.com.alevel.persistence.entity.user.User;
+import ua.com.alevel.util.SecurityUtil;
+import ua.com.alevel.view.dto.request.PersonalRequestDto;
+import ua.com.alevel.view.dto.request.ProductRequestDto;
+import ua.com.alevel.view.dto.response.PersonalResponseDto;
 
 @Validated
 @Controller
 @RequestMapping("/personal")
 public class PersonalController {
 
-    @GetMapping("/{id}")
-    public String dashboard(@PathVariable @ValidId(message = "id must be more than zero") Long id) {
-        System.out.println("id = " + id);
-        return "pages/personal/dashboard";
+    private final PersonalFacade personalFacade;
+
+    private final SecurityService securityService;
+
+    public PersonalController(PersonalFacade personalFacade, SecurityService securityService) {
+        this.personalFacade = personalFacade;
+        this.securityService = securityService;
     }
 
-//    @GetMapping("/cart")
-//    public String productCart() {
-//
-//        return "pages/personal/product_cart";
-//    }
+    @GetMapping("/profile")
+    public String userProfile(Model model) {
+        Long userId = null;
+        boolean isAuthenticated = securityService.isAuthenticated();
+        if (isAuthenticated) {
+            if (personalFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = personalFacade.findByName(SecurityUtil.getUsername());
+            }
+        }
+        PersonalResponseDto personal = personalFacade.findById(userId);
+        model.addAttribute("user", personal);
+        return "user_profile";
+    }
+
+    @PostMapping("/profile")
+    public String saveProfile(@ModelAttribute("user") PersonalRequestDto user) {
+        Long userId = null;
+        boolean isAuthenticated = securityService.isAuthenticated();
+        if (isAuthenticated) {
+            if (personalFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = personalFacade.findByName(SecurityUtil.getUsername());
+            }
+        }
+        personalFacade.update(user, userId);
+        return "redirect:/products/magic";
+    }
 }

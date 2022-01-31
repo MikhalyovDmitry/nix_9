@@ -22,6 +22,43 @@
 </head>
 <body>
 
+<script type="text/javascript">
+  function setCursorPosition(pos, e) {
+    e.focus();
+    if (e.setSelectionRange) e.setSelectionRange(pos, pos);
+    else if (e.createTextRange) {
+      var range = e.createTextRange();
+      range.collapse(true);
+      range.moveEnd("character", pos);
+      range.moveStart("character", pos);
+      range.select()
+    }
+  }
+
+  function mask(e) {
+    //console.log('mask',e);
+    var matrix = this.placeholder,// .defaultValue
+        i = 0,
+        def = matrix.replace(/\D/g, ""),
+        val = this.value.replace(/\D/g, "");
+    def.length >= val.length && (val = def);
+    matrix = matrix.replace(/[_\d]/g, function(a) {
+      return val.charAt(i++) || "_"
+    });
+    this.value = matrix;
+    i = matrix.lastIndexOf(val.substr(-1));
+    i < matrix.length && matrix != this.placeholder ? i++ : i = matrix.indexOf("_");
+    setCursorPosition(i, this)
+  }
+  window.addEventListener("DOMContentLoaded", function() {
+    var input = document.querySelector("#online_phone");
+    input.addEventListener("input", mask, false);
+    input.focus();
+    setCursorPosition(3, input);
+  });
+</script>
+
+
     <div class="cart_section">
         <div class="container-fluid">
             <div class="row">
@@ -95,7 +132,8 @@
                                                 <span class="font-weight-bold theme-color" th:text="'$' + ${totalPrice}"></span>
                                             </div>
 
-                                            <form id="form" name="form"  action="#" th:action="@{'/cart/' + ${userId}}" th:object="${order}" method="post">
+                                            <form id="form" name="form"
+                                                  action="#" th:action="@{'/cart/' + ${userId}}" th:object="${order}" method="post">
                                                 <h4 class="mt-5 theme-color mb-5">Your name:
                                                     <br>
                                                     <input name="login" id="login" th:field="*{name}">
@@ -103,7 +141,11 @@
 
                                                 <h4 class="mt-5 theme-color mb-5">Phone number (10 digits)
                                                     <br>
-                                                    <input type="tel" name="tel" pattern="[0-9]{10}" th:field="*{phone}"></p>
+                                                    <input id="online_phone" name="phone" type="tel" maxlength="50"
+                                                           autofocus="autofocus" required="required"
+                                                           value="+8(___)___-__-__"
+                                                           pattern="\+8\s?[\(]{0,1}\d{3}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+                                                           placeholder="+8(___)___-__-__" th:field="*{phone}">
                                                 </h4>
 
                                                 <div class="text-center mt-5">

@@ -33,6 +33,14 @@ public class OrderResponseDto extends ResponseDto {
         this.products = order.getProducts();
     }
 
+    public double getTotal() {
+        double total = 0;
+        for (Product product: this.products) {
+            total = total + product.getPrice();
+        }
+        return total;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -97,15 +105,4 @@ public class OrderResponseDto extends ResponseDto {
         this.updated = updated;
     }
 
-    @Override
-    public String toString() {
-        return "OrderResponseDto{" +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", name='" + name + '\'' +
-                ", products=" + products +
-                '}';
-    }
 }

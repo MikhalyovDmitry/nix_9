@@ -23,17 +23,17 @@
             <div class="inputbox">
                 <span>Email</span>
                 <input type="email" th:field="*{email}" id="email" class="form-control" />
-                <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red"></span>
             </div>
             <div class="inputbox">
                 <span>Password</span>
                 <input type="password" th:field="*{password}" id="password" class="form-control" />
-                <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red"></span>
             </div>
             <div class="inputbox">
                 <span>Confirm password</span>
                 <input type="password" th:field="*{passwordConfirm}" id="passwordConfirm" class="form-control" />
-                <span class="has-error" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></span>
+                <span class="has-error" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}" style="color: red"></span>
             </div>
         </div>
         <div class="mt-2 proceed">

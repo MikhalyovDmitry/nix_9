@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{admin_dashboard_layout}">
+<head>
+    <title>Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'/>
+    <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/icon-font.min.css" type='text/css'>
+    <link href="/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="page-container" layout:fragment="dash_content">
+    <!--/content-inner-->
+    <div class="left-content">
+        <div class="mother-grid-inner">
+            <h5 class="head" style="margin-left: 20px">ORDER LIST</h5>
+            <!--w3-agileits-pane-->
+            <div class="w3-agileits-pane">
+
+                <div class="col-md-8 agile-info-stat">
+                    <div class="stats-info stats-last widget-shadow">
+                        <table class="table stats-table ">
+                            <thead>
+                            <tr>
+                                <th>S.NO</th>
+                                <th>USER</th>
+                                <th>PHONE</th>
+                                <th>NAME</th>
+                                <th>TOTAL</th>
+                            </tr>
+                            </thead>
+                            <tbody th:each="order,iter : ${orders}">
+                            <tr>
+                                <th scope="row" th:text="${iter.count}"></th>
+                                <td th:text="${order.getEmail()}" ></td>
+                                <td th:text="${order.getPhone()}" ></td>
+                                <td th:text="${order.getName()}" ></td>
+                                <td th:text="${order.getTotal()}" ></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!--//w3-agileits-pane-->
+            <!--inner block start here-->
+            <div class="inner-block">
+
+            </div>
+            <!--inner block end here-->
+
+        </div>
+    </div>
+</div>
+<!--//content-inner-->
+</body>
+</html>

@@ -246,7 +246,6 @@ public class ProductController extends AbstractController {
         redirectAttributes.addFlashAttribute("ok", ok);
 
         OrderResponseDto order = (OrderResponseDto) model.asMap().get("order");
-        System.out.println(order.toString());
         redirectAttributes.addFlashAttribute("name", order.getName());
         return "redirect:/products/details/" + id;
     }

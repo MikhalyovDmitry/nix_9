@@ -12,21 +12,14 @@ import java.util.List;
 @DiscriminatorValue("PERSONAL")
 public class Personal extends User {
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "birth_day")
-    private Date birthDay;
-
     @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
 
-    @Transient
-    private String fullName;
-
-    @Transient
-    private Integer age;
+    private String phone;
+    private String address;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -44,16 +37,24 @@ public class Personal extends User {
         return orders;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public void setOrders(List<Order> orders) {
         this.orders = orders;
-    }
-
-    public Date getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
     }
 
     public String getFirstName() {
@@ -70,21 +71,5 @@ public class Personal extends User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 }

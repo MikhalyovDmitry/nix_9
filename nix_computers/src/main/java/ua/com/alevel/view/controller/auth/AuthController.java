@@ -45,11 +45,12 @@ public class AuthController extends AbstractController {
             }
         }
         if (error != null) {
-            showError(model, "Your email and password is invalid.");
+            showError(model, "Your email or password is invalid.");
         }
         if (logout != null) {
             showInfo(model, "You have been logged out successfully.");
         }
+
         return "login";
     }
 
