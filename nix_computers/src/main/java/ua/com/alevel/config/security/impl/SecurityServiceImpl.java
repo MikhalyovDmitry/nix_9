@@ -9,8 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import ua.com.alevel.config.security.SecurityService;
+import ua.com.alevel.persistence.entity.user.Personal;
 import ua.com.alevel.persistence.entity.user.User;
+import ua.com.alevel.persistence.repository.user.PersonalRepository;
 import ua.com.alevel.persistence.repository.user.UserRepository;
+import ua.com.alevel.util.SecurityUtil;
 
 @Service
 public class SecurityServiceImpl implements SecurityService {
@@ -18,14 +21,16 @@ public class SecurityServiceImpl implements SecurityService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final UserRepository<User> userRepository;
+    private final PersonalRepository personalRepository;
 
     public SecurityServiceImpl(
             AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService,
-            UserRepository<User> userRepository) {
+            UserRepository<User> userRepository, PersonalRepository personalRepository) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
+        this.personalRepository = personalRepository;
     }
 
     @Override
@@ -50,5 +55,15 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public User currentUser() {
+        return userRepository.findByEmail(SecurityUtil.getUsername());
+    }
+
+    @Override
+    public Personal currentPersonal() {
+        return personalRepository.findByEmail(SecurityUtil.getUsername());
     }
 }

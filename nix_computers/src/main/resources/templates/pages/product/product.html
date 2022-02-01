@@ -107,7 +107,7 @@
                                          tabindex="-1" role="dialog" aria-labelledby="buyButtonModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-body ">
+                                                <div class="modal-body">
                                                     <div class="px-4 py-5">
 
                                                         <span class="theme-color">Payment Summary</span>
@@ -125,7 +125,8 @@
                                                         </div>
 
                                                         <form id="form" name="form" th:action="@{'/products/details/' + ${id}}" th:object="${order}" method="post">
-                                                            <h4 class="mt-5 theme-color mb-5">Your name:
+                                                            <h4 class="mt-5 theme-color mb-5"
+                                                                th:style="${nameInputVisibility ? 'display: block' : 'display: none'}">Your name:
                                                                 <br>
                                                                 <input name="login" id="login" type="text" th:field="*{name}">
                                                             </h4>
@@ -140,8 +141,7 @@
                                                             </h4>
 
                                                             <div class="text-center mt-5">
-                                                                <button class="btn btn-primary" type="submit"
-                                                                        onclick="getUserName()">Submit</button>
+                                                                <button class="btn btn-primary" type="submit">Submit</button>
                                                             </div>
                                                         </form>
 
@@ -163,8 +163,9 @@
                                                         <h4 class="mt-5 theme-color mb-5">Thanks for your order</h4>
                                                         <h4 class="mt-5 theme-color mb-5">We'll call you soon</h4>
                                                         <div class="text-center mt-5">
-                                                            <button type="button"
-                                                                    class="btn btn-primary" onclick="$('#final').modal('hide');">ОK</button>
+                                                            <a type="button"
+                                                                    class="btn btn-primary"
+                                                                    onclick="$('#final').modal('hide');" th:href="@{'/products/magic'}">ОK</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -181,8 +182,6 @@
                                        class="btn btn-primary shop-button">
                                         Continue shopping
                                     </a>
-
-
 
                                     <a type="button" style="visibility: hidden;" id="finalModal" href="#"
                                        data-target="#final" data-toggle="modal"

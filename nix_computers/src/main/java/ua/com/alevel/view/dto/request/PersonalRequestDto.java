@@ -1,6 +1,7 @@
 package ua.com.alevel.view.dto.request;
 
 import ua.com.alevel.persistence.entity.Order;
+import ua.com.alevel.persistence.entity.user.Personal;
 import ua.com.alevel.view.dto.RequestDto;
 
 import java.util.List;
@@ -13,6 +14,17 @@ public class PersonalRequestDto extends RequestDto {
     private String firstName;
     private String lastName;
     private List<Order> orders;
+
+    public PersonalRequestDto(Personal personal) {
+        if (personal != null) {
+            this.email = personal.getEmail();
+            this.phone = personal.getPhone();
+            this.address = personal.getAddress();
+            this.firstName = personal.getFirstName();
+            this.lastName = personal.getLastName();
+            this.orders = personal.getOrders();
+        }
+    }
 
     public String getEmail() {
         return email;

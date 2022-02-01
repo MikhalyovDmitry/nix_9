@@ -135,7 +135,14 @@ public class OrderFacadeImpl implements OrderFacade {
     @Override
     public Long lastCreated() {
         DataTableRequest request = new DataTableRequest().findAllRequest();
-        return orderService.findAll(request).getItemsSize();
+        List<Order> orders = orderService.findAll(request).getItems();
+        Long lastId = 0L;
+        for (Order order: orders) {
+            if (order.getId() > lastId) {
+                lastId = order.getId();
+            }
+        }
+        return lastId;
     }
 
     @Override

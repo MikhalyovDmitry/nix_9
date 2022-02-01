@@ -13,6 +13,7 @@ import ua.com.alevel.util.SecurityUtil;
 import ua.com.alevel.view.dto.request.CartRequestDto;
 import ua.com.alevel.view.dto.request.OrderRequestDto;
 import ua.com.alevel.view.dto.response.CartResponseDto;
+import ua.com.alevel.view.dto.response.OrderResponseDto;
 import ua.com.alevel.view.dto.response.ProductResponseDto;
 
 import java.math.BigDecimal;
@@ -43,25 +44,16 @@ public class CartController {
         this.adminFacade = adminFacade;
     }
 
-    @GetMapping("/{userId}/{productId}")
+    @GetMapping("/{userId}/{productId}") // Добавление продукта в корзину пользователя
     public String productToCart(@PathVariable Long productId, Model model, RedirectAttributes redirectAttributes) {
         CartRequestDto cartRequestDto = new CartRequestDto();
         cartRequestDto.setProductId(productId);
-
-        boolean isAuthenticated = securityService.isAuthenticated();
-        Long userId = null;
-        if (isAuthenticated) {
-            userId = personalFacade.findByName(SecurityUtil.getUsername());
-        }
+        Long userId = securityService.currentUser().getId();
         cartRequestDto.setUserId(userId);
         cartFacade.create(cartRequestDto);
 
-        boolean buttonsVisibility = true;
-        if (isAuthenticated) {
-            if (adminFacade.findByName(SecurityUtil.getUsername()) != null) {
-                buttonsVisibility = false;
-            }
-        }
+        boolean buttonsVisibility = adminFacade.findByName(SecurityUtil.getUsername()) == null;
+
         redirectAttributes.addFlashAttribute("buttonsVisibility", buttonsVisibility);
         redirectAttributes.addFlashAttribute("message", "Product added to cart");
         redirectAttributes.addFlashAttribute("visibility", true);
@@ -69,7 +61,7 @@ public class CartController {
     }
 
     @GetMapping("/{userId}")
-    public String cart(@PathVariable Long userId, WebRequest webRequest, Model model) {
+    public String cart(@PathVariable Long userId, WebRequest webRequest, Model model, RedirectAttributes redirectAttributes) {
         List<CartResponseDto> cart = cartFacade.cartByUserId(userId, webRequest);
         List<ProductResponseDto> products = new ArrayList<>();
         BigDecimal totalPrice = BigDecimal.valueOf(0);
@@ -80,23 +72,28 @@ public class CartController {
             count++;
         }
 
+        boolean buyNowButtonVisibility = true;
+        if (cart.size() == 0) {
+            buyNowButtonVisibility = false;
+        }
+
+        boolean nameInputVisibility = true;
+        if (securityService.currentPersonal().getFullName() != null) {
+            nameInputVisibility = false;
+        }
+
+        model.addAttribute("nameInputVisibility", nameInputVisibility);
+        model.addAttribute("buyNowButtonVisibility", buyNowButtonVisibility);
         model.addAttribute("userId", userId);
         model.addAttribute("products", products);
         model.addAttribute("totalPrice", totalPrice.setScale(2));
         model.addAttribute("count", count);
         model.addAttribute("order", new OrderRequestDto());
-        String firstName = personalFacade.findById(personalFacade.findByName(SecurityUtil.getUsername())).getFirstName();
-        String lastname = personalFacade.findById(personalFacade.findByName(SecurityUtil.getUsername())).getLastName();
-        if (firstName == null && lastname == null) {
-            model.addAttribute("userName", SecurityUtil.getUsername());
-        } else {
-            model.addAttribute("userName", firstName + lastname);
-        }
         return "/cart";
     }
 
     @PostMapping("/{userId}")
-    public String cart(@ModelAttribute("order") OrderRequestDto dto, @PathVariable Long userId, WebRequest webRequest) {
+    public String cart(@ModelAttribute("order") OrderRequestDto dto, @PathVariable Long userId, WebRequest webRequest, RedirectAttributes redirectAttributes) {
         String email = personalFacade.findById(userId).getEmail();
         List<CartResponseDto> cart = cartFacade.cartByUserId(userId, webRequest);
         List<ProductResponseDto> productsDto = cart.
@@ -109,11 +106,28 @@ public class CartController {
 
         dto.setProducts(products);
         dto.setEmail(email);
+        if (securityService.currentPersonal().getFullName() != null) {
+            dto.setName(securityService.currentPersonal().getFullName());
+        }
         orderFacade.create(dto);
         Long orderId = orderFacade.lastCreated();
         personalFacade.addOrderToUser(userId, orderId);
         cartFacade.deleteCartByUsersId(userId);
-        return "redirect:/products/magic";
+
+        OrderResponseDto order = orderFacade.findById(orderId);
+        redirectAttributes.addFlashAttribute("order", order);
+
+        return "redirect:/cart/buy/" + userId;
+    }
+
+    @GetMapping("/buy/{userId}")
+    public String buy(RedirectAttributes redirectAttributes, Model model, @PathVariable Long userId) {
+        boolean ok = true;
+        redirectAttributes.addFlashAttribute("ok", ok);
+
+        OrderResponseDto order = (OrderResponseDto) model.asMap().get("order");
+        redirectAttributes.addFlashAttribute("name", order.getName());
+        return "redirect:/cart/" + userId;
     }
 
 
@@ -123,7 +137,6 @@ public class CartController {
         if (cartIds.get(0) != null) {
             cartFacade.delete(cartIds.get(0));
         }
-
         return "redirect:/cart/" + userId;
     }
 }

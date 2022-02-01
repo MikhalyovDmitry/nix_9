@@ -20,7 +20,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
     <link href="/css/cart.css" rel="stylesheet">
 </head>
-<body>
+
+<script type="text/javascript" th:if="${ok}">
+    function finalModal() {
+    document.getElementById('finalModal').click();
+    };
+    </script>
+
+<body onload="finalModal()">
 
 <script type="text/javascript">
   function setCursorPosition(pos, e) {
@@ -104,8 +111,19 @@
                             </div>
                         </div>
                         <div class="cart_buttons">
-                            <a type="button" class="btn btn-primary shop-button" th:href="@{'/products/magic'}">Continue Shopping</a>
-                            <button type="button" class="btn btn-primary shop-button" data-toggle="modal" data-target="#exampleModalLive">Buy now</button>
+                            <a type="button" style="visibility: hidden;" id="finalModal" href="#"
+                               data-target="#final" data-toggle="modal"
+                               class="btn btn-primary shop-button">
+                                Continue shopping
+                            </a>
+
+                            <button type="button" class="btn btn-primary shop-button"
+                                    data-toggle="modal" data-target="#exampleModalLive"
+                                    th:style="${buyNowButtonVisibility ? 'visibility: visible' : 'visibility: hidden'}">Buy now</button>
+
+                            <a type="button" class="btn btn-primary shop-button"
+                               th:href="@{'/products/magic'}">Continue Shopping</a>
+
 
 
                         </div>
@@ -134,7 +152,8 @@
 
                                             <form id="form" name="form"
                                                   action="#" th:action="@{'/cart/' + ${userId}}" th:object="${order}" method="post">
-                                                <h4 class="mt-5 theme-color mb-5">Your name:
+                                                <h4 class="mt-5 theme-color mb-5"
+                                                    th:style="${nameInputVisibility ? 'display: block' : 'display: none'}">Your name:
                                                     <br>
                                                     <input name="login" id="login" th:field="*{name}">
                                                 </h4>
@@ -149,7 +168,7 @@
                                                 </h4>
 
                                                 <div class="text-center mt-5">
-                                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#final" onclick="$('#exampleModalLive').modal('hide');">Submit</button>
+                                                    <button class="btn btn-primary" type="submit" onclick="$('#exampleModalLive').modal('hide');">Submit</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -164,11 +183,12 @@
                                     <div class="modal-body ">
                                         <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
                                         <div class="px-4 py-5">
-                                            <h5 class="text-uppercase" id="caps" th:text="${userName}"></h5>
+                                            <h5 class="text-uppercase" id="caps" th:text="${name}"></h5>
                                             <h4 class="mt-5 theme-color mb-5">Thanks for your order</h4>
                                             <h4 class="mt-5 theme-color mb-5">We'll call you soon</h4>
                                             <div class="text-center mt-5">
-                                                <button type="submit" form="form" class="btn btn-primary" onclick="$('#final').modal('hide');">ОK</button>
+                                                <a type="button" class="btn btn-primary"
+                                                        onclick="$('#final').modal('hide');" th:href="@{'/products/magic'}">ОK</a>
                                             </div>
                                         </div>
                                     </div>

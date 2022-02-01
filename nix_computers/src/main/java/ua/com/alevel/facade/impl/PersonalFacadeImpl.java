@@ -6,7 +6,6 @@ import ua.com.alevel.facade.PersonalFacade;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.Order;
-import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.persistence.entity.user.Personal;
 import ua.com.alevel.service.OrderService;
 import ua.com.alevel.service.PersonalService;
@@ -44,7 +43,16 @@ public class PersonalFacadeImpl implements PersonalFacade {
         orders.add(orderService.findById(orderId).get());
         personal.setOrders(orders);
         personalService.update(personal);
+    }
 
+    @Override
+    public void removeOrder(Long userId, Long orderId) {
+        Personal personal = new Personal();
+        personal = personalService.findById(userId).get();
+        List<Order> orders = personal.getOrders();
+        orders.remove(orderService.findById(orderId).get());
+        personal.setOrders(orders);
+        personalService.update(personal);
     }
 
     @Override

@@ -33,6 +33,13 @@ public class Personal extends User {
         setRoleType(RoleType.ROLE_PERSONAL);
     }
 
+    public String getFullName() {
+        if (firstName != null && lastName != null) {
+            return firstName + " " + lastName;
+        }
+        return null;
+    }
+
     public List<Order> getOrders() {
         return orders;
     }

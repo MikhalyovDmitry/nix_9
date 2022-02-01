@@ -221,6 +221,12 @@ public class ProductController extends AbstractController {
             }
         }
 
+        boolean nameInputVisibility = true;
+        if (securityService.currentPersonal().getFullName() != null) {
+            nameInputVisibility = false;
+        }
+
+        model.addAttribute("nameInputVisibility", nameInputVisibility);
         model.addAttribute("visibility", false);
         model.addAttribute("buttonsVisibility", buttonsVisibility);
         model.addAttribute("id", id);
@@ -229,12 +235,32 @@ public class ProductController extends AbstractController {
 
     @PostMapping("/details/{id}")
     public String orderFromUnregisteredUserInit(@ModelAttribute("order") OrderRequestDto dto, @PathVariable Long id, RedirectAttributes redirectAttributes) {
-        dto.setEmail("Unregistered user");
+        Long userId = null;
+        boolean isAuthenticated = securityService.isAuthenticated();
+        if (isAuthenticated) {
+            if (adminFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = adminFacade.findByName(SecurityUtil.getUsername());
+            }
+            if (personalFacade.findByName(SecurityUtil.getUsername()) != null) {
+                userId = personalFacade.findByName(SecurityUtil.getUsername());
+            }
+        }
+
         List<Product> products = new ArrayList<>();
         products.add(productFacade.findProductById(id));
         dto.setProducts(products);
+        if (userId != null) {
+            dto.setEmail(SecurityUtil.getUsername());
+        } else {
+            dto.setEmail("Unregistered user");
+        }
         orderFacade.create(dto);
+
         Long orderId = orderFacade.lastCreated();
+        if (userId != null) {
+            personalFacade.addOrderToUser(userId, orderId);
+        }
+
         OrderResponseDto order = orderFacade.findById(orderId);
         redirectAttributes.addFlashAttribute("order", order);
         return "redirect:/products/details/order/" + id;

@@ -15,6 +15,7 @@ public class PersonalResponseDto extends ResponseDto {
     private String phone;
     private String address;
     private List<Order> orders;
+    private String fullName;
 
     public PersonalResponseDto(Personal personal) {
         if (personal != null) {

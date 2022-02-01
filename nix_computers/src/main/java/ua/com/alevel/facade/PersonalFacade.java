@@ -10,6 +10,8 @@ public interface PersonalFacade extends BaseFacade<PersonalRequestDto, PersonalR
 
     void addOrderToUser(Long userId, Long orderId);
 
+    void removeOrder(Long userId, Long orderId);
+
     Long findByName(String name);
 
 }
