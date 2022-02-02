@@ -33,8 +33,7 @@ import static ua.com.alevel.util.WebRequestUtil.DEFAULT_ORDER_PARAM_VALUE;
 @Controller
 @RequestMapping("/orders")
 
-public class
-OrderController extends AbstractController {
+public class OrderController extends AbstractController {
 
     private final OrderFacade orderFacade;
     private final ProductFacade productFacade;

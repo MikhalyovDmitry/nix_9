@@ -13,6 +13,9 @@ public class PageData<REQ extends ResponseDto> {
     private int totalPageSize;
     private long itemsSize;
     private List<REQ> items;
+
+    private List<REQ> allItems;
+
     private final int[] pageSizeItems;
     private boolean showFirst;
     private boolean showPrevious;
@@ -29,6 +32,7 @@ public class PageData<REQ extends ResponseDto> {
         this.totalPageSize = 10;
         this.itemsSize = 0;
         this.items = new ArrayList<>();
+        this.allItems = new ArrayList<>();
         this.pageSizeItems = new int[]{ 10, 25, 50 };
         this.showFirst = false;
         this.showPrevious = false;
@@ -48,6 +52,14 @@ public class PageData<REQ extends ResponseDto> {
         this.showLast = page != totalPageSize;
         this.showNext = page != totalPageSize;
         this.showPrevious = page - 1 != 0;
+    }
+
+    public List<REQ> getAllItems() {
+        return allItems;
+    }
+
+    public void setAllItems(List<REQ> allItems) {
+        this.allItems = allItems;
     }
 
     public int getCurrentPage() {

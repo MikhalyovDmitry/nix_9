@@ -1,34 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <title>New Book</title>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/css/login.css" rel="stylesheet">
 </head>
 <body>
 
-<div layout:fragment="content">
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card mb-2 mt-2">
-                <div class="card-header">
-                    Sorry, something went wrong
-                </div>
-                <div class="card-body">
-                    If you want to return to the previous page - <a href="#" th:onclick="|back()|" type="button" class="btn btn-light">click here</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="card">
+    <a style="color: blue; font-weight: bold; font-size: 30px;"> OOPS!</a>
+    <a style="color: blue; font-weight: bold; font-size: 20px;"> We are sorry! Something wrong</a>
+    <a style="color: blue; font-weight: bold; font-size: 18px;"> Press BACK to continue...</a>
+    <a href="#" th:onclick="|back()|" type="button" class="btn btn-primary btn-block"> BACK </a>
 
 </div>
 
-<th:block layout:fragment="scripts">
-    <script type="text/javascript" th:src="@{/js/main.js}"></script>
-</th:block>
-
 </body>
 </html>
+
+

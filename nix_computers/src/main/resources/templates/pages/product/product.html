@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:visibility="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8">
 		<title>Product page</title>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/font-awesome.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-
-        <link href="css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-
         <link href="/css/product.css" rel="stylesheet">
 	</head>
 
@@ -125,16 +118,17 @@
                                                         </div>
 
                                                         <form id="form" name="form" th:action="@{'/products/details/' + ${id}}" th:object="${order}" method="post">
+
                                                             <h4 class="mt-5 theme-color mb-5"
                                                                 th:style="${nameInputVisibility ? 'display: block' : 'display: none'}">Your name:
                                                                 <br>
                                                                 <input name="login" id="login" type="text" th:field="*{name}">
                                                             </h4>
 
-                                                            <h4 class="mt-5 theme-color mb-5">Phone number:
+                                                            <h4 class="mt-5 theme-color mb-5" th:style="${phoneInputVisibility ? 'display: block' : 'display: none'}">Phone number:
                                                                 <br>
                                                                 <input id="online_phone" name="phone" type="tel" maxlength="50"
-                                                                       autofocus="autofocus" required="required"
+                                                                       autofocus="autofocus"
                                                                        value="+8(___)___-__-__"
                                                                        pattern="\+8\s?[\(]{0,1}\d{3}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
                                                                        placeholder="+8(___)___-__-__" th:field="*{phone}">

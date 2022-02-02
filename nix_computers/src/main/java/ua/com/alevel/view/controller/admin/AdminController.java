@@ -1,11 +1,15 @@
 package ua.com.alevel.view.controller.admin;
 
+import org.apache.commons.collections4.MapUtils;
 import org.hibernate.sql.ordering.antlr.OrderByAliasResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 import ua.com.alevel.config.security.SecurityService;
 import ua.com.alevel.facade.AdminFacade;
 import ua.com.alevel.facade.OrderFacade;
@@ -16,10 +20,13 @@ import ua.com.alevel.persistence.entity.user.Personal;
 import ua.com.alevel.util.SecurityUtil;
 import ua.com.alevel.view.dto.request.OrderRequestDto;
 import ua.com.alevel.view.dto.response.OrderResponseDto;
+import ua.com.alevel.view.dto.response.PageData;
 import ua.com.alevel.view.dto.response.PersonalResponseDto;
+import ua.com.alevel.view.dto.response.ProductResponseDto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -55,28 +62,43 @@ public class AdminController {
 
     @GetMapping("/users")
     public String userList(WebRequest request, Model model) {
-        List<PersonalResponseDto> users = personalFacade.findAll(request).getItems();
-        System.out.println();
-        Long userId = null;
-        boolean isAuthenticated = securityService.isAuthenticated();
-        if (isAuthenticated) {
-            if (adminFacade.findByName(SecurityUtil.getUsername()) != null) {
-                userId = adminFacade.findByName(SecurityUtil.getUsername());
-            }
-            if (personalFacade.findByName(SecurityUtil.getUsername()) != null) {
-                userId = personalFacade.findByName(SecurityUtil.getUsername());
-            }
-        }
+        PageData<PersonalResponseDto> response = personalFacade.findAll(request);
+        response.initPaginationState(response.getCurrentPage());
+        model.addAttribute("createUrl", "/admin/users");
+        model.addAttribute("pageData", response);
 
+        List<PersonalResponseDto> users = personalFacade.findAll(request).getItems();
         model.addAttribute("users", users);
         return "admin_users";
     }
+    @PostMapping("/users")
+    public ModelAndView usersPaginationRequest(WebRequest request, ModelMap model) {
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        if (MapUtils.isNotEmpty(parameterMap)) {
+            parameterMap.forEach(model::addAttribute);
+        }
+        return new ModelAndView("redirect:/admin/users", model);
+    }
+
 
     @GetMapping("/orders")
     public String orderList(WebRequest request, Model model) {
-        List<OrderResponseDto> orders = orderFacade.findAll(request).getItems();
+        PageData<OrderResponseDto> response = orderFacade.findAll(request);
+        response.initPaginationState(response.getCurrentPage());
+        model.addAttribute("createUrl", "/admin/orders");
+        model.addAttribute("pageData", response);
 
+        List<OrderResponseDto> orders = orderFacade.findAll(request).getItems();
         model.addAttribute("orders", orders);
         return "admin_orders";
+    }
+
+    @PostMapping("/orders")
+    public ModelAndView ordersPagination(WebRequest request, ModelMap model) {
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        if (MapUtils.isNotEmpty(parameterMap)) {
+            parameterMap.forEach(model::addAttribute);
+        }
+        return new ModelAndView("redirect:/admin/orders", model);
     }
 }

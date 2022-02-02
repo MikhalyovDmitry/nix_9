@@ -5,22 +5,81 @@
       layout:decorate="~{admin_dashboard_layout}">
 <head>
     <title>Page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="/css/style.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'/>
     <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/icon-font.min.css" type='text/css'>
-    <link href="/css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
+
 <div class="page-container" layout:fragment="dash_content">
-    <!--/content-inner-->
     <div class="left-content">
         <div class="mother-grid-inner">
-            <h5 class="head" style="margin-left: 20px">USER LIST</h5>
-            <!--w3-agileits-pane-->
+
+            <section id="data-table">
+                <div class="col-12">
+                    <div class="d-flex justify-content-end">
+                        <div class="mr-auto p-1" style="margin-left: 20px">
+                            <h5 class="head">USER LIST</h5>
+                        </div>
+                        <div class="p-1">Showing [[${pageData.getCurrentShowFromEntries()}]] to [[${pageData.getCurrentShowToEntries()}]] of [[${pageData.getItemsSize()}]] entries</div>
+                        <div class="p-1">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span th:text="${pageData.getPageSize()}"></span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <section th:each="size : ${pageData.getPageSizeItems()}">
+                                        <a class="dropdown-item" href="#" th:onclick="|runPagination(1, ${size}, 0)|" th:text="${size}">@size</a>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-1" >
+                            <ul class="pagination align-middle">
+                                <li class="page-item" th:classappend="${pageData.isShowFirst() ? '' : 'disabled'}">
+                                    <a class="page-link" href="#" th:onclick="|runPagination(1, ${pageData.getPageSize()}, 0)|" title="First Page"><i class="fa fa-fast-backward"></i></a>
+                                </li>
+                                <li class="page-item" th:classappend="${pageData.isShowPrevious() ? '' : 'disabled'}">
+                                    <a class="page-link" href="#" th:onclick="|runPagination(${pageData.getCurrentPage()}, ${pageData.getPageSize()}, -1)|" title="Previous Page"><i class="fa fa-backward"></i></a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="" th:text="${pageData.getCurrentPage()}">@Model.currentPage</a>
+                                </li>
+                                <li class="page-item" th:classappend="${pageData.isShowNext() ? '' : 'disabled'}">
+                                    <a class="page-link" href="#" th:onclick="|runPagination(${pageData.getCurrentPage()}, ${pageData.getPageSize()}, 1)|" title="Next Page"><i class="fa fa-forward"></i></a>
+                                </li>
+                                <li class="page-item" th:classappend="${pageData.isShowLast() ? '' : 'disabled'}">
+                                    <a class="page-link" href="#" th:onclick="|runPagination(${pageData.getTotalPageSize()}, ${pageData.getPageSize()}, 0)|" title="Last Page"><i class="fa fa-fast-forward"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="p-1">
+                            <a class="page-link btn btn-secondary" href="#" th:onclick="|runPagination(${pageData.getCurrentPage()}, ${pageData.getPageSize()}, 0)|" title="Refresh Page"><i class="fa fa-refresh"></i></a>
+                        </div>
+                        <div class="p-1">
+                            <a class="page-link btn btn-secondary" href="#" onclick="runPagination(1, 10, 0)" title="Reset Page"><i class="fa fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="POST" th:action="@{${createUrl}}" id="personalSearch">
+                    <input type="submit"
+                           id="personalSearchSubmit"
+                           style="visibility: hidden"
+                    />
+                </form>
+
+                <span th:data-sort="${pageData.getSort()}"
+                      th:data-order="${pageData.getOrder()}"
+                      th:data-page="${pageData.getCurrentPage()}"
+                      th:data-size="${pageData.getPageSize()}"
+                      id="pageData">
+                </span>
+            </section>
+
             <div class="w3-agileits-pane">
 
                 <div class="col-md-8 agile-info-stat">
@@ -36,46 +95,18 @@
                             </thead>
                             <tbody th:each="user,iter : ${users}">
                             <tr>
-                                <th scope="row" th:text="${iter.count}"></th>
-                                <td th:text="${user.getEmail()}" ></td>
-                                <td th:text="${user.getOrders().size()}" ></td>
-                                <td th:text="${user.getUserTotal()}" ></td>
+                                <th scope="row" th:text="${iter.count}" style="padding: 0.62rem;"></th>
+                                <td th:text="${user.getEmail()}" style="padding: 0.62rem;"></td>
+                                <td th:text="${user.getOrders().size()}" style="padding: 0.62rem;"></td>
+                                <td th:text="${user.getUserTotal()}" style="padding: 0.62rem;"></td>
                             </tr>
-<!--                            <tr>-->
-<!--                                <th scope="row">2</th>-->
-<!--                                <td>Aliquam</td>-->
-<!--                                <td><span class="label label-warning">New</span></td>-->
-<!--                                <td><h5>35% <i class="fa fa-level-up"></i></h5></td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">3</th>-->
-<!--                                <td>Lorem ipsum</td>-->
-<!--                                <td><span class="label label-danger">Overdue</span></td>-->
-<!--                                <td><h5 class="down">40% <i class="fa fa-level-down"></i></h5></td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <th scope="row">4</th>-->
-<!--                                <td>Aliquam</td>-->
-<!--                                <td><span class="label label-info">Out of stock</span></td>-->
-<!--                                <td><h5>100% <i class="fa fa-level-up"></i></h5></td>-->
-<!--                            </tr>-->
-
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <!--//w3-agileits-pane-->
-            <!--inner block start here-->
-            <div class="inner-block">
-
-            </div>
-            <!--inner block end here-->
-
         </div>
     </div>
-</div>
-<!--//content-inner-->
-</body>
+</div></body>
 </html>

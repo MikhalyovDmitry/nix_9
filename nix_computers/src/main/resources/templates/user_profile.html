@@ -1,16 +1,50 @@
 <!DOCTYPE HTML>
 <html lang="en"
-      xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <title>Page</title>
+    <title>User profile</title>
     <link rel="stylesheet" href=https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css>
     <link rel="stylesheet" href=https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js>
     <link rel='stylesheet' href=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js>
     <link href="/css/profile.css" rel="stylesheet">
 </head>
 <body>
+<script type="text/javascript">
+  function setCursorPosition(pos, e) {
+    e.focus();
+    if (e.setSelectionRange) e.setSelectionRange(pos, pos);
+    else if (e.createTextRange) {
+      var range = e.createTextRange();
+      range.collapse(true);
+      range.moveEnd("character", pos);
+      range.moveStart("character", pos);
+      range.select()
+    }
+  }
+
+  function mask(e) {
+    //console.log('mask',e);
+    var matrix = this.placeholder,// .defaultValue
+        i = 0,
+        def = matrix.replace(/\D/g, ""),
+        val = this.value.replace(/\D/g, "");
+    def.length >= val.length && (val = def);
+    matrix = matrix.replace(/[_\d]/g, function(a) {
+      return val.charAt(i++) || "_"
+    });
+    this.value = matrix;
+    i = matrix.lastIndexOf(val.substr(-1));
+    i < matrix.length && matrix != this.placeholder ? i++ : i = matrix.indexOf("_");
+    setCursorPosition(i, this)
+  }
+  window.addEventListener("DOMContentLoaded", function() {
+    var input = document.querySelector("#online_phone");
+    input.addEventListener("input", mask, false);
+    input.focus();
+    setCursorPosition(3, input);
+  });
+</script>
 
     <div class="container rounded bg-white mt-5 mb-5">
         <div class="row">
@@ -39,7 +73,11 @@
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <label class="labels">Phone Number</label>
-                                <input type="text" class="form-control" placeholder="Enter phone number" value="" th:field="*{phone}">
+                                <input id="online_phone" name="phone" type="tel" maxlength="50" class="form-control"
+                                       autofocus="autofocus" required="required"
+                                       value="+8(___)___-__-__"
+                                       pattern="\+8\s?[\(]{0,1}\d{3}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+                                       placeholder="+8(___)___-__-__" th:field="*{phone}">
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">Address</label>

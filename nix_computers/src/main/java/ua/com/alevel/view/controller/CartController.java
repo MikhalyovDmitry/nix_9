@@ -15,7 +15,6 @@ import ua.com.alevel.view.dto.request.OrderRequestDto;
 import ua.com.alevel.view.dto.response.CartResponseDto;
 import ua.com.alevel.view.dto.response.OrderResponseDto;
 import ua.com.alevel.view.dto.response.ProductResponseDto;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,6 @@ public class CartController {
     private final OrderFacade orderFacade;
     private final ProductService productService;
     private final AdminFacade adminFacade;
-
 
     public CartController(CartFacade cartFacade, ProductFacade productFacade, PersonalFacade personalFacade, SecurityService securityService, OrderFacade orderFacade, ProductService productService, AdminFacade adminFacade) {
         this.cartFacade = cartFacade;
@@ -53,15 +51,18 @@ public class CartController {
         cartFacade.create(cartRequestDto);
 
         boolean buttonsVisibility = adminFacade.findByName(SecurityUtil.getUsername()) == null;
-
+        boolean nameInputVisibility = true;
+        boolean phoneInputVisibility = true;
+        redirectAttributes.addFlashAttribute("phoneInputVisibility", phoneInputVisibility);
+        redirectAttributes.addFlashAttribute("nameInputVisibility", nameInputVisibility);
         redirectAttributes.addFlashAttribute("buttonsVisibility", buttonsVisibility);
         redirectAttributes.addFlashAttribute("message", "Product added to cart");
         redirectAttributes.addFlashAttribute("visibility", true);
         return "redirect:/products/details/" + productId;
     }
 
-    @GetMapping("/{userId}")
-    public String cart(@PathVariable Long userId, WebRequest webRequest, Model model, RedirectAttributes redirectAttributes) {
+    @GetMapping("/{userId}") // Страница корзины пользователя
+    public String cart(@PathVariable Long userId, WebRequest webRequest, Model model) {
         List<CartResponseDto> cart = cartFacade.cartByUserId(userId, webRequest);
         List<ProductResponseDto> products = new ArrayList<>();
         BigDecimal totalPrice = BigDecimal.valueOf(0);
@@ -76,12 +77,16 @@ public class CartController {
         if (cart.size() == 0) {
             buyNowButtonVisibility = false;
         }
-
         boolean nameInputVisibility = true;
         if (securityService.currentPersonal().getFullName() != null) {
             nameInputVisibility = false;
         }
+        boolean phoneInputVisibility = true;
+        if (securityService.currentPersonal().getPhone() != null) {
+            phoneInputVisibility = false;
+        }
 
+        model.addAttribute("phoneInputVisibility", phoneInputVisibility);
         model.addAttribute("nameInputVisibility", nameInputVisibility);
         model.addAttribute("buyNowButtonVisibility", buyNowButtonVisibility);
         model.addAttribute("userId", userId);
@@ -92,13 +97,13 @@ public class CartController {
         return "/cart";
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/{userId}") // Пост метод создания заказа из корзины
     public String cart(@ModelAttribute("order") OrderRequestDto dto, @PathVariable Long userId, WebRequest webRequest, RedirectAttributes redirectAttributes) {
         String email = personalFacade.findById(userId).getEmail();
         List<CartResponseDto> cart = cartFacade.cartByUserId(userId, webRequest);
         List<ProductResponseDto> productsDto = cart.
                 stream().map(cartResponseDto ->
-                        productFacade.findById(cartResponseDto.getProductId())).collect(Collectors.toList());
+                        productFacade.findById(cartResponseDto.getProductId())).toList();
 
         List<Product> products = productsDto.
                 stream().
@@ -108,6 +113,9 @@ public class CartController {
         dto.setEmail(email);
         if (securityService.currentPersonal().getFullName() != null) {
             dto.setName(securityService.currentPersonal().getFullName());
+        }
+        if (securityService.currentPersonal().getPhone() != null) {
+            dto.setPhone(securityService.currentPersonal().getPhone());
         }
         orderFacade.create(dto);
         Long orderId = orderFacade.lastCreated();

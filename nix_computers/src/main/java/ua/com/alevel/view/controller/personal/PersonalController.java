@@ -1,6 +1,5 @@
 package ua.com.alevel.view.controller.personal;
 
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -10,11 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.com.alevel.config.security.SecurityService;
 import ua.com.alevel.facade.PersonalFacade;
-import ua.com.alevel.persistence.entity.user.Personal;
-import ua.com.alevel.persistence.entity.user.User;
 import ua.com.alevel.util.SecurityUtil;
 import ua.com.alevel.view.dto.request.PersonalRequestDto;
-import ua.com.alevel.view.dto.request.ProductRequestDto;
 import ua.com.alevel.view.dto.response.PersonalResponseDto;
 
 @Validated
@@ -23,7 +19,6 @@ import ua.com.alevel.view.dto.response.PersonalResponseDto;
 public class PersonalController {
 
     private final PersonalFacade personalFacade;
-
     private final SecurityService securityService;
 
     public PersonalController(PersonalFacade personalFacade, SecurityService securityService) {
@@ -50,9 +45,7 @@ public class PersonalController {
         Long userId = null;
         boolean isAuthenticated = securityService.isAuthenticated();
         if (isAuthenticated) {
-            if (personalFacade.findByName(SecurityUtil.getUsername()) != null) {
-                userId = personalFacade.findByName(SecurityUtil.getUsername());
-            }
+            userId = securityService.currentUser().getId();
         }
         personalFacade.update(user, userId);
         return "redirect:/products/magic";

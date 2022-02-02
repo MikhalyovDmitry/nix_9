@@ -33,24 +33,14 @@ public class AuthController extends AbstractController {
 
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
-
         showMessage(model, false);
         boolean authenticated = securityService.isAuthenticated();
         if (authenticated) {
-            if (SecurityUtil.hasRole(RoleType.ROLE_ADMIN.name())) {
-                return "redirect:/admin/dashboard";
-            }
-            if (SecurityUtil.hasRole(RoleType.ROLE_PERSONAL.name())) {
-                return "redirect:/products/magic";
-            }
+            return "redirect:/products/magic";
         }
         if (error != null) {
             showError(model, "Your email or password is invalid.");
         }
-        if (logout != null) {
-            showInfo(model, "You have been logged out successfully.");
-        }
-
         return "login";
     }
 
@@ -77,10 +67,8 @@ public class AuthController extends AbstractController {
 
     private String redirectProcess(Model model) {
         showMessage(model, false);
-        if (SecurityUtil.hasRole(RoleType.ROLE_ADMIN.name())) {
-            return "redirect:/admin/dashboard";
-        }
-        if (SecurityUtil.hasRole(RoleType.ROLE_PERSONAL.name())) {
+        boolean authenticated = securityService.isAuthenticated();
+        if (authenticated) {
             return "redirect:/products/magic";
         }
         return "redirect:/login";
