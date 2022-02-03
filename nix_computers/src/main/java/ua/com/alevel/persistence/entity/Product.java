@@ -29,6 +29,18 @@ public class Product extends BaseEntity {
         this.orders = new ArrayList<>();
     }
 
+    public int getSales() {
+        int sales;
+        List<Order> orders = this.getOrders();
+        sales = (int) orders.
+                stream().
+                map(Order::getProducts).
+                flatMap(Collection::stream).
+                filter(product -> Objects.equals(product.getId(), this.getId())).
+                count();
+        return sales;
+    }
+
     public String getName() {
         return name;
     }

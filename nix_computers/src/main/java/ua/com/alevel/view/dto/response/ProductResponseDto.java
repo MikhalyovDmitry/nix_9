@@ -1,9 +1,13 @@
 package ua.com.alevel.view.dto.response;
 
+import ua.com.alevel.persistence.entity.Order;
 import ua.com.alevel.view.dto.ResponseDto;
 import ua.com.alevel.persistence.entity.Product;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 public class ProductResponseDto extends ResponseDto {
 
@@ -11,6 +15,9 @@ public class ProductResponseDto extends ResponseDto {
     private BigDecimal price;
     private boolean inStock;
     private String image;
+    private List<Order> orders;
+    private int sales;
+
 
     public ProductResponseDto() {
     }
@@ -22,7 +29,30 @@ public class ProductResponseDto extends ResponseDto {
             this.price = BigDecimal.valueOf(product.getPrice()).setScale(2);
             this.inStock = product.isInStock();
             this.image = product.getImage();
+            this.orders = product.getOrders();
+            this.sales = product.getSales();
         }
+    }
+
+    public int getSales() {
+        int sales = 0;
+        List<Order> orders = this.getOrders();
+        sales = (int) orders.
+                stream().
+                map(Order::getProducts).
+                flatMap(Collection::stream).
+                filter(product -> Objects.equals(product.getId(), this.getId())).
+                count();
+        return sales;
+    }
+
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public String getName() {

@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductFacade extends BaseFacade<ProductRequestDto, ProductResponseDto> {
 
+    List<ProductResponseDto> topSales();
+
     Product findProductById(Long productId);
 
     List<OrderResponseDto> getOrders(Long id);

@@ -2,6 +2,7 @@ package ua.com.alevel.facade.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
+import ua.com.alevel.comparator.SalesComparator;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.Order;
@@ -30,6 +31,21 @@ public class ProductFacadeImpl implements ProductFacade {
     public ProductFacadeImpl(OrderService orderService, ProductService productService) {
         this.orderService = orderService;
         this.productService = productService;
+    }
+
+    @Override
+    public List<ProductResponseDto> topSales() {
+        List<Product> products = productService.findAll(new DataTableRequest().findAllRequest()).getItems();
+        ArrayList<ProductResponseDto> all = new ArrayList<>();
+        for (Product product: products) {
+            System.out.println("Product sales = " + product.getSales());
+            ProductResponseDto dto = new ProductResponseDto(product);
+            System.out.println("DTO sales = " + dto.getSales());
+            all.add(dto);
+        }
+        SalesComparator salesComparator = new SalesComparator(this);
+        all.sort(salesComparator);
+        return all;
     }
 
     @Override

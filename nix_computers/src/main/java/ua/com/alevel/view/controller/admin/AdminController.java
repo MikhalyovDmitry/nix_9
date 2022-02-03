@@ -1,7 +1,6 @@
 package ua.com.alevel.view.controller.admin;
 
 import org.apache.commons.collections4.MapUtils;
-import org.hibernate.sql.ordering.antlr.OrderByAliasResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,16 +14,15 @@ import ua.com.alevel.facade.AdminFacade;
 import ua.com.alevel.facade.OrderFacade;
 import ua.com.alevel.facade.PersonalFacade;
 import ua.com.alevel.facade.ProductFacade;
-import ua.com.alevel.persistence.entity.Order;
-import ua.com.alevel.persistence.entity.user.Personal;
-import ua.com.alevel.util.SecurityUtil;
-import ua.com.alevel.view.dto.request.OrderRequestDto;
+import ua.com.alevel.persistence.entity.Product;
 import ua.com.alevel.view.dto.response.OrderResponseDto;
 import ua.com.alevel.view.dto.response.PageData;
 import ua.com.alevel.view.dto.response.PersonalResponseDto;
 import ua.com.alevel.view.dto.response.ProductResponseDto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +50,9 @@ public class AdminController {
         long productCount = productFacade.findAll(webrequest).getItemsSize();
         long orderCount = orderFacade.findAll(webrequest).getItemsSize();
         BigDecimal revenue = orderFacade.revenue();
+        List<ProductResponseDto> topSales = productFacade.topSales().subList(0, 5);
 
+        model.addAttribute("topSales", topSales);
         model.addAttribute("userCount", userCount);
         model.addAttribute("productCount", productCount);
         model.addAttribute("orderCount", orderCount);
