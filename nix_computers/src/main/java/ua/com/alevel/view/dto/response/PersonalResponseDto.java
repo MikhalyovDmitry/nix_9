@@ -23,6 +23,7 @@ public class PersonalResponseDto extends ResponseDto {
             this.firstName = personal.getFirstName();
             this.lastName = personal.getLastName();
             this.orders = personal.getOrders();
+            this.address = personal.getAddress();
             super.setId(personal.getId());
         }
     }
@@ -33,6 +34,14 @@ public class PersonalResponseDto extends ResponseDto {
             userTotal = userTotal + order.getOrderTotalPrice();
         }
         return userTotal;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPhone() {

@@ -38,9 +38,7 @@ public class ProductFacadeImpl implements ProductFacade {
         List<Product> products = productService.findAll(new DataTableRequest().findAllRequest()).getItems();
         ArrayList<ProductResponseDto> all = new ArrayList<>();
         for (Product product: products) {
-            System.out.println("Product sales = " + product.getSales());
             ProductResponseDto dto = new ProductResponseDto(product);
-            System.out.println("DTO sales = " + dto.getSales());
             all.add(dto);
         }
         SalesComparator salesComparator = new SalesComparator(this);

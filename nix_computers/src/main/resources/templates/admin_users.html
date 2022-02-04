@@ -91,6 +91,8 @@
                                 <th>E-MAIL</th>
                                 <th>ORDERS</th>
                                 <th>TOTAL</th>
+                                <th>NAME</th>
+                                <th>ADDRESS</th>
                             </tr>
                             </thead>
                             <tbody th:each="user,iter : ${users}">
@@ -99,6 +101,8 @@
                                 <td th:text="${user.getEmail()}" style="padding: 0.62rem;"></td>
                                 <td th:text="${user.getOrders().size()}" style="padding: 0.62rem;"></td>
                                 <td th:text="${user.getUserTotal()}" style="padding: 0.62rem;"></td>
+                                <td th:text="${user.getFullName()}" style="padding: 0.62rem;"></td>
+                                <td th:text="${user.getAddress()}" style="padding: 0.62rem;"></td>
                             </tr>
                             </tbody>
                         </table>
